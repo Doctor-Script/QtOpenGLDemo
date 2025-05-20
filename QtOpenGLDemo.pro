@@ -11,9 +11,11 @@ CONFIG += c++11
 SOURCES += \
     main.cpp \
     GtWidget.cpp \
+    $$files(gtengine/*.cpp, true)
 
 HEADERS += \
     GtWidget.h \
+    $$files(gtengine/*.h, true)
 
 RESOURCES += \
     shaders.qrc \
