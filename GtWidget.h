@@ -37,7 +37,7 @@ private:
     QOpenGLBuffer arrayBuf;
     QOpenGLBuffer indexBuf;
 
-    void draw();
+    void draw(gref<GtSprite> sprite, Transform2::Global& parent);
 };
 
 } // namespace gt

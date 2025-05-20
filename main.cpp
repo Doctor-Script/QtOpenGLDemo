@@ -18,7 +18,12 @@ class DemoWindow : public GtWindow
         GtWindow::created();
 
         auto s = _scene->child<GtSprite>();
-        s->transform.setX(10);
+        s->transform.setX(100);
+        s->transform.setY(100);
+//        s->transform.setAngle(45);
+
+        auto s1 = s->child<GtSprite>();
+        s1->transform.setY(100);
     }
 };
 
@@ -36,7 +41,7 @@ int main(int argc, char *argv[])
 
 
 #ifndef QT_NO_OPENGL
-    GtWidget widget(new DemoWindow);
+    GtWidget widget(new DemoWindow());
     widget.show();
 #else
     QLabel note("OpenGL Support required");

@@ -5,7 +5,7 @@ namespace gt
     GtWidget::GtWidget(GtWindow* window, QWidget *parent)
         : QOpenGLWidget(parent), _window(window), indexBuf(QOpenGLBuffer::IndexBuffer)
     {
-
+        _window->created();
     }
 
     GtWidget::~GtWidget() {
@@ -61,45 +61,71 @@ namespace gt
         program.setUniformValue("mvp_matrix", projection * matrix);
         program.setUniformValue("texture", 0);
 
-        for (int i = 0; i < 3; i++)
+//        qDebug() << "node";
+        Transform2::Global none;
+        FOREACH_NODE(node, _window->_scene)
         {
-            float d = 100 * i;
-            float vertices[] = {
-                d + 0.0f,   d + 0.0f,    1.0f, 0.0f,  0.0f,  // v0
-                d + 255.0f, d + 0.0f,    1.0f, 0.33f, 0.0f, // v1
-                d + 0.0f,   d + 255.0f,  1.0f, 0.0f,  0.5f,  // v2
-                d + 255.0f, d + 255.0f,  1.0f, 0.33f, 0.5f // v3
-            };
-
-            auto ptrV = arrayBuf.map(QOpenGLBuffer::WriteOnly);
-            memcpy(ptrV, vertices, 20 * sizeof(float));
-            arrayBuf.unmap();
-            arrayBuf.bind();
-
-            GLushort indices[] = { 0, 1, 2, 3, 2, 1 };
-            auto ptrI = indexBuf.map(QOpenGLBuffer::WriteOnly);
-            memcpy(ptrI, indices, 6 * sizeof(GLushort));
-            indexBuf.unmap();
-            indexBuf.bind();
-
-            quintptr offset = 0;
-
-            int vertexLocation = program.attributeLocation("a_position");
-            program.enableAttributeArray(vertexLocation);
-            program.setAttributeBuffer(vertexLocation, GL_FLOAT, offset, 3, 5 * sizeof(float));
-
-            offset += sizeof(QVector3D);
-
-            int texcoordLocation = program.attributeLocation("a_texcoord");
-            program.enableAttributeArray(texcoordLocation);
-            program.setAttributeBuffer(texcoordLocation, GL_FLOAT, offset, 2, 5 * sizeof(float));
-
-            glDrawElements(GL_TRIANGLE_STRIP, 6, GL_UNSIGNED_SHORT, 0);
+//            qDebug() << "node";
+            draw(node->to<GtSprite>(), none);
         }
+//        for (int i = 0; i < 3; i++)
+//        {
+////            draw(100 * i);
+//        }
     }
 
-    void GtWidget::draw()
+    void GtWidget::draw(gref<GtSprite> sprite, Transform2::Global& parent)
     {
+//        float d = 0;
+//        float vertices[] = {
+//            d + 0.0f,   d + 0.0f,    1.0f, 0.0f,  0.0f,  // v0
+//            d + 255.0f, d + 0.0f,    1.0f, 0.33f, 0.0f, // v1
+//            d + 0.0f,   d + 255.0f,  1.0f, 0.0f,  0.5f,  // v2
+//            d + 255.0f, d + 255.0f,  1.0f, 0.33f, 0.5f // v3
+//        };
+        auto spriteGlobal = sprite->transform.globalOf(parent);
+        auto q = sprite->transform.vertices();
+        qDebug() << q.bl.x << ", " << q.bl.y;
+        qDebug() << q.br.x << ", " << q.br.y;
+        qDebug() << q.tr.x << ", " << q.tr.y;
+        qDebug() << q.tl.x << ", " << q.tl.y;
+        qDebug() << "--------------------";
 
+        float vertices[] = {
+            q.bl.x, q.bl.y, 1.0f, 0.0f,  0.0f, // v0
+            q.br.x, q.br.y, 1.0f, 0.33f, 0.0f, // v1
+            q.tr.x, q.tr.y, 1.0f, 0.0f,  0.5f, // v2
+            q.tl.x, q.tl.y, 1.0f, 0.33f, 0.5f  // v3
+        };
+
+        auto ptrV = arrayBuf.map(QOpenGLBuffer::WriteOnly);
+        memcpy(ptrV, vertices, 20 * sizeof(float));
+        arrayBuf.unmap();
+        arrayBuf.bind();
+
+        GLushort indices[] = { 0, 1, 2, 3, 2, 1 };
+        auto ptrI = indexBuf.map(QOpenGLBuffer::WriteOnly);
+        memcpy(ptrI, indices, 6 * sizeof(GLushort));
+        indexBuf.unmap();
+        indexBuf.bind();
+
+        quintptr offset = 0;
+
+        int vertexLocation = program.attributeLocation("a_position");
+        program.enableAttributeArray(vertexLocation);
+        program.setAttributeBuffer(vertexLocation, GL_FLOAT, offset, 3, 5 * sizeof(float));
+
+        offset += sizeof(QVector3D);
+
+        int texcoordLocation = program.attributeLocation("a_texcoord");
+        program.enableAttributeArray(texcoordLocation);
+        program.setAttributeBuffer(texcoordLocation, GL_FLOAT, offset, 2, 5 * sizeof(float));
+
+        glDrawElements(GL_TRIANGLE_STRIP, 6, GL_UNSIGNED_SHORT, 0);
+
+        FOREACH_NODE(node, sprite)
+        {
+            draw(node->to<GtSprite>(), spriteGlobal);
+        }
     }
 } // namespace gt
