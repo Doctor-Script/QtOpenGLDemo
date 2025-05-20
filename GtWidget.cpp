@@ -8,7 +8,10 @@ namespace gt
 
     }
 
-
+    GtWidget::~GtWidget() {
+        arrayBuf.destroy();
+        indexBuf.destroy();
+    }
 
     void GtWidget::initializeGL()
     {
@@ -33,28 +36,19 @@ namespace gt
         glEnable(GL_DEPTH_TEST);
         glEnable(GL_CULL_FACE);
 
-//        float vertices[] = {
-//            0.0f,  0.0f,  1.0f, 0.0f, 0.0f,  // v0
-//            255.0f, 0.0f,  1.0f, 0.33f, 0.0f, // v1
-//            0.0f,  255.0f,  1.0f, 0.0f, 0.5f,  // v2
-//            255.0f,  255.0f,  1.0f, 0.33f, 0.5f // v3
-//        };
         arrayBuf.create();
         arrayBuf.bind();
-//        arrayBuf.allocate(vertices, 20 * sizeof(float));
         arrayBuf.allocate(20 * sizeof(float));
 
-//        GLushort indices[] = { 0, 1, 2, 3, 2, 1 };
         indexBuf.create();
         indexBuf.bind();
-//        indexBuf.allocate(indices, 6 * sizeof(GLushort));
         indexBuf.allocate(6 * sizeof(GLushort));
     }
 
     void GtWidget::resizeGL(int w, int h)
     {
         projection.setToIdentity();
-        projection.ortho(0.0f,1.0f*w,0.0f,1.0f*h,0.5f,200.0f);
+        projection.ortho(0.0f, 1.0f * w, 0.0f, 1.0f * h, 0.5f, 200.0f);
     }
 
     void GtWidget::paintGL()
@@ -77,42 +71,35 @@ namespace gt
                 d + 255.0f, d + 255.0f,  1.0f, 0.33f, 0.5f // v3
             };
 
-//        float vertices[] = {
-//            0.0f,  0.0f,  1.0f, 0.0f, 0.0f,  // v0
-//            255.0f, 0.0f,  1.0f, 0.33f, 0.0f, // v1
-//            0.0f,  255.0f,  1.0f, 0.0f, 0.5f,  // v2
-//            255.0f,  255.0f,  1.0f, 0.33f, 0.5f // v3
-//        };
-        auto ptrV = arrayBuf.map(QOpenGLBuffer::WriteOnly);
-        memcpy(ptrV, vertices, 20 * sizeof(float));
-        arrayBuf.unmap();
-        arrayBuf.bind();
+            auto ptrV = arrayBuf.map(QOpenGLBuffer::WriteOnly);
+            memcpy(ptrV, vertices, 20 * sizeof(float));
+            arrayBuf.unmap();
+            arrayBuf.bind();
 
-        GLushort indices[] = { 0, 1, 2, 3, 2, 1 };
-        auto ptrI = indexBuf.map(QOpenGLBuffer::WriteOnly);
-        memcpy(ptrI, indices, 6 * sizeof(GLushort));
-        indexBuf.unmap();
-        indexBuf.bind();
+            GLushort indices[] = { 0, 1, 2, 3, 2, 1 };
+            auto ptrI = indexBuf.map(QOpenGLBuffer::WriteOnly);
+            memcpy(ptrI, indices, 6 * sizeof(GLushort));
+            indexBuf.unmap();
+            indexBuf.bind();
 
-//        arrayBuf.bind();
-//        indexBuf.bind();
+            quintptr offset = 0;
 
-        quintptr offset = 0;
+            int vertexLocation = program.attributeLocation("a_position");
+            program.enableAttributeArray(vertexLocation);
+            program.setAttributeBuffer(vertexLocation, GL_FLOAT, offset, 3, 5 * sizeof(float));
 
-        int vertexLocation = program.attributeLocation("a_position");
-        program.enableAttributeArray(vertexLocation);
-        //program.setAttributeBuffer(vertexLocation, GL_FLOAT, offset, 3, sizeof(VertexData));
-        program.setAttributeBuffer(vertexLocation, GL_FLOAT, offset, 3, 5 * sizeof(float));
+            offset += sizeof(QVector3D);
 
-        offset += sizeof(QVector3D);
+            int texcoordLocation = program.attributeLocation("a_texcoord");
+            program.enableAttributeArray(texcoordLocation);
+            program.setAttributeBuffer(texcoordLocation, GL_FLOAT, offset, 2, 5 * sizeof(float));
 
-        int texcoordLocation = program.attributeLocation("a_texcoord");
-        program.enableAttributeArray(texcoordLocation);
-//        program.setAttributeBuffer(texcoordLocation, GL_FLOAT, offset, 2, sizeof(VertexData));
-        program.setAttributeBuffer(texcoordLocation, GL_FLOAT, offset, 2, 5 * sizeof(float));
-
-//        glDrawElements(GL_TRIANGLE_STRIP, 34, GL_UNSIGNED_SHORT, 0);
-        glDrawElements(GL_TRIANGLE_STRIP, 6, GL_UNSIGNED_SHORT, 0);
+            glDrawElements(GL_TRIANGLE_STRIP, 6, GL_UNSIGNED_SHORT, 0);
         }
+    }
+
+    void GtWidget::draw()
+    {
+
     }
 } // namespace gt

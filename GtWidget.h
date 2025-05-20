@@ -21,10 +21,7 @@ class GtWidget : public QOpenGLWidget, protected QOpenGLFunctions
 
 public:
     explicit GtWidget(GtWindow* window, QWidget *parent = nullptr);
-    ~GtWidget() {
-        arrayBuf.destroy();
-        indexBuf.destroy();
-    }
+    ~GtWidget();
 
     void initializeGL() override;
     void resizeGL(int w, int h) override;
@@ -39,6 +36,8 @@ private:
 
     QOpenGLBuffer arrayBuf;
     QOpenGLBuffer indexBuf;
+
+    void draw();
 };
 
 } // namespace gt
