@@ -2,7 +2,8 @@
 
 namespace gt
 {
-    GtWidget::GtWidget(QWidget *parent) : QOpenGLWidget(parent), indexBuf(QOpenGLBuffer::IndexBuffer)
+    GtWidget::GtWidget(GtWindow* window, QWidget *parent)
+        : QOpenGLWidget(parent), _window(window), indexBuf(QOpenGLBuffer::IndexBuffer)
     {
 
     }
@@ -32,24 +33,22 @@ namespace gt
         glEnable(GL_DEPTH_TEST);
         glEnable(GL_CULL_FACE);
 
+//        float vertices[] = {
+//            0.0f,  0.0f,  1.0f, 0.0f, 0.0f,  // v0
+//            255.0f, 0.0f,  1.0f, 0.33f, 0.0f, // v1
+//            0.0f,  255.0f,  1.0f, 0.0f, 0.5f,  // v2
+//            255.0f,  255.0f,  1.0f, 0.33f, 0.5f // v3
+//        };
         arrayBuf.create();
-        indexBuf.create();
-
-        float vertices[] = {
-            0.0f,  0.0f,  1.0f, 0.0f, 0.0f,  // v0
-            255.0f, 0.0f,  1.0f, 0.33f, 0.0f, // v1
-            0.0f,  255.0f,  1.0f, 0.0f, 0.5f,  // v2
-            255.0f,  255.0f,  1.0f, 0.33f, 0.5f // v3
-        };
-
-        GLushort indices[] = { 0, 1, 2, 3, 2, 1 };
-
         arrayBuf.bind();
-        arrayBuf.allocate(vertices, 20 * sizeof(float));
+//        arrayBuf.allocate(vertices, 20 * sizeof(float));
+        arrayBuf.allocate(20 * sizeof(float));
 
+//        GLushort indices[] = { 0, 1, 2, 3, 2, 1 };
+        indexBuf.create();
         indexBuf.bind();
-        indexBuf.allocate(indices, 6 * sizeof(GLushort));
-
+//        indexBuf.allocate(indices, 6 * sizeof(GLushort));
+        indexBuf.allocate(6 * sizeof(GLushort));
     }
 
     void GtWidget::resizeGL(int w, int h)
@@ -61,14 +60,42 @@ namespace gt
     void GtWidget::paintGL()
     {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
         texture->bind();
         QMatrix4x4 matrix;
         matrix.translate(0.0, 0.0, -50.0);
         program.setUniformValue("mvp_matrix", projection * matrix);
         program.setUniformValue("texture", 0);
 
+        for (int i = 0; i < 3; i++)
+        {
+            float d = 100 * i;
+            float vertices[] = {
+                d + 0.0f,   d + 0.0f,    1.0f, 0.0f,  0.0f,  // v0
+                d + 255.0f, d + 0.0f,    1.0f, 0.33f, 0.0f, // v1
+                d + 0.0f,   d + 255.0f,  1.0f, 0.0f,  0.5f,  // v2
+                d + 255.0f, d + 255.0f,  1.0f, 0.33f, 0.5f // v3
+            };
+
+//        float vertices[] = {
+//            0.0f,  0.0f,  1.0f, 0.0f, 0.0f,  // v0
+//            255.0f, 0.0f,  1.0f, 0.33f, 0.0f, // v1
+//            0.0f,  255.0f,  1.0f, 0.0f, 0.5f,  // v2
+//            255.0f,  255.0f,  1.0f, 0.33f, 0.5f // v3
+//        };
+        auto ptrV = arrayBuf.map(QOpenGLBuffer::WriteOnly);
+        memcpy(ptrV, vertices, 20 * sizeof(float));
+        arrayBuf.unmap();
         arrayBuf.bind();
+
+        GLushort indices[] = { 0, 1, 2, 3, 2, 1 };
+        auto ptrI = indexBuf.map(QOpenGLBuffer::WriteOnly);
+        memcpy(ptrI, indices, 6 * sizeof(GLushort));
+        indexBuf.unmap();
         indexBuf.bind();
+
+//        arrayBuf.bind();
+//        indexBuf.bind();
 
         quintptr offset = 0;
 
@@ -86,6 +113,6 @@ namespace gt
 
 //        glDrawElements(GL_TRIANGLE_STRIP, 34, GL_UNSIGNED_SHORT, 0);
         glDrawElements(GL_TRIANGLE_STRIP, 6, GL_UNSIGNED_SHORT, 0);
+        }
     }
-
 } // namespace gt

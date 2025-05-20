@@ -8,13 +8,19 @@
 #include <QOpenGLShaderProgram>
 #include <QOpenGLBuffer>
 
+#include "gtengine.h"
+#include <memory>
+
 namespace gt {
 
 class GtWidget : public QOpenGLWidget, protected QOpenGLFunctions
 {
     Q_OBJECT
+
+    std::unique_ptr<GtWindow> _window;
+
 public:
-    explicit GtWidget(QWidget *parent = nullptr);
+    explicit GtWidget(GtWindow* window, QWidget *parent = nullptr);
     ~GtWidget() {
         arrayBuf.destroy();
         indexBuf.destroy();

@@ -6,7 +6,21 @@
 #include "GtWidget.h"
 #endif
 
+
+
+#include "gtengine.h"
 using namespace gt;
+
+class DemoWindow : public GtWindow
+{
+    void created() override
+    {
+        GtWindow::created();
+
+        auto s = _scene->child<GtSprite>();
+        s->transform.setX(10);
+    }
+};
 
 int main(int argc, char *argv[])
 {
@@ -18,8 +32,11 @@ int main(int argc, char *argv[])
 
     app.setApplicationName("GL Demo");
     app.setApplicationVersion("0.1");
+
+
+
 #ifndef QT_NO_OPENGL
-    GtWidget widget;
+    GtWidget widget(new DemoWindow);
     widget.show();
 #else
     QLabel note("OpenGL Support required");
