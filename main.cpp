@@ -13,17 +13,18 @@ using namespace gt;
 
 class DemoWindow : public GtWindow
 {
-    void created() override
+    void start() override
     {
-        GtWindow::created();
+        GtWindow::start();
 
-        auto s = _scene->child<GtSprite>();
+        auto s = _scene->child<GSprite>();
         s->transform.setX(100);
         s->transform.setY(100);
-//        s->transform.setAngle(45);
+        s->transform.setAngle(45);
 
-        auto s1 = s->child<GtSprite>();
+        auto s1 = s->child<GSprite>();
         s1->transform.setY(100);
+        s1->transform.setAngle(45);
     }
 };
 

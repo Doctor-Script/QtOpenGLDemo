@@ -1,11 +1,13 @@
 #include "GtWidget.h"
 
+#include "sprite/Transform2D.h"
+
 namespace gt
 {
     GtWidget::GtWidget(GtWindow* window, QWidget *parent)
         : QOpenGLWidget(parent), _window(window), indexBuf(QOpenGLBuffer::IndexBuffer)
     {
-        _window->created();
+        _window->start();
     }
 
     GtWidget::~GtWidget() {
@@ -61,35 +63,27 @@ namespace gt
         program.setUniformValue("mvp_matrix", projection * matrix);
         program.setUniformValue("texture", 0);
 
-//        qDebug() << "node";
-        Transform2::Global none;
-        FOREACH_NODE(node, _window->_scene)
-        {
-//            qDebug() << "node";
-            draw(node->to<GtSprite>(), none);
+        Transform2D::Global none;
+        FOREACH_NODE(node, _window->_scene) {
+            draw(node->to<GSprite>(), none);
         }
-//        for (int i = 0; i < 3; i++)
-//        {
-////            draw(100 * i);
-//        }
     }
 
-    void GtWidget::draw(gref<GtSprite> sprite, Transform2::Global& parent)
+    void GtWidget::draw(gref<GSprite> sprite, Transform2D::Global& parent)
     {
-//        float d = 0;
-//        float vertices[] = {
-//            d + 0.0f,   d + 0.0f,    1.0f, 0.0f,  0.0f,  // v0
-//            d + 255.0f, d + 0.0f,    1.0f, 0.33f, 0.0f, // v1
-//            d + 0.0f,   d + 255.0f,  1.0f, 0.0f,  0.5f,  // v2
-//            d + 255.0f, d + 255.0f,  1.0f, 0.33f, 0.5f // v3
-//        };
         auto spriteGlobal = sprite->transform.globalOf(parent);
         auto q = sprite->transform.vertices();
-        qDebug() << q.bl.x << ", " << q.bl.y;
-        qDebug() << q.br.x << ", " << q.br.y;
-        qDebug() << q.tr.x << ", " << q.tr.y;
-        qDebug() << q.tl.x << ", " << q.tl.y;
-        qDebug() << "--------------------";
+
+        FOREACH_NODE(node, sprite)
+        {
+            draw(node->to<GSprite>(), spriteGlobal);
+        }
+
+//        qDebug() << q.bl.x << ", " << q.bl.y;
+//        qDebug() << q.br.x << ", " << q.br.y;
+//        qDebug() << q.tr.x << ", " << q.tr.y;
+//        qDebug() << q.tl.x << ", " << q.tl.y;
+//        qDebug() << "--------------------";
 
         float vertices[] = {
             q.bl.x, q.bl.y, 1.0f, 0.0f,  0.0f, // v0
@@ -123,9 +117,6 @@ namespace gt
 
         glDrawElements(GL_TRIANGLE_STRIP, 6, GL_UNSIGNED_SHORT, 0);
 
-        FOREACH_NODE(node, sprite)
-        {
-            draw(node->to<GtSprite>(), spriteGlobal);
-        }
+
     }
 } // namespace gt

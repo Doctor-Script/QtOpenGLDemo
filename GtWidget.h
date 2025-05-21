@@ -9,7 +9,7 @@
 #include <QOpenGLBuffer>
 
 #include "gtengine.h"
-#include <memory>
+//#include <memory>
 
 namespace gt {
 
@@ -37,7 +37,7 @@ private:
     QOpenGLBuffer arrayBuf;
     QOpenGLBuffer indexBuf;
 
-    void draw(gref<GtSprite> sprite, Transform2::Global& parent);
+    void draw(gref<GSprite> sprite, Transform2D::Global& parent);
 };
 
 } // namespace gt
