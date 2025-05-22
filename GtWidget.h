@@ -9,7 +9,6 @@
 #include <QOpenGLBuffer>
 
 #include "gtengine.h"
-//#include <memory>
 
 namespace gt {
 
@@ -17,10 +16,16 @@ class GtWidget : public QOpenGLWidget, protected QOpenGLFunctions
 {
     Q_OBJECT
 
-    std::unique_ptr<GtWindow> _window;
+    std::unique_ptr<GWindow> _window;
+
+
+
+
+
+
 
 public:
-    explicit GtWidget(GtWindow* window, QWidget *parent = nullptr);
+    explicit GtWidget(GWindow* window, QWidget *parent = nullptr);
     ~GtWidget();
 
     void initializeGL() override;

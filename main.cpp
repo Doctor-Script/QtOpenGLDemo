@@ -11,11 +11,11 @@
 #include "gtengine.h"
 using namespace gt;
 
-class DemoWindow : public GtWindow
+class DemoWindow : public GWindow
 {
     void start() override
     {
-        GtWindow::start();
+        GWindow::start();
 
         auto s = _scene->child<GSprite>();
         s->transform.setX(100);
