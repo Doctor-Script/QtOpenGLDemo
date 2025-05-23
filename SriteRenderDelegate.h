@@ -8,29 +8,27 @@
 #include <QOpenGLShaderProgram>
 #include <QOpenGLBuffer>
 
-#include "gtengine/render/RenderDelegate.h"
+#include "gtengine/render/Render.h"
 #include "gtengine.h"
-//#include "gtengine/GWindow.h"
 
 namespace gt
 {
-    class QtRenderer;
+    class QtRender;
 
-    class SriteRenderDelegate : public RenderDelegate//, protected QOpenGLFunctions
+    class SriteRenderDelegate : public Render::Delegate
     {
     public:
-        QtRenderer* qtRenderer;
+        QtRender* qtRenderer;
         QOpenGLShaderProgram program;
         QOpenGLTexture *texture;
 
-        SriteRenderDelegate(QtRenderer* qtRenderer);
+        SriteRenderDelegate(QtRender* qtRenderer);
 
-        void init() override;
-//        void render(Renderable* renderable) override;
-        void render(Renderable* renderable, Transform2D::Cache& cache) override;
+        void init();
+        void perform(Render::Item* renderable, Transform2D::Cache& cache) override;
     };
 
-    class QtRenderer : public Renderer, public QOpenGLFunctions
+    class QtRender : public Render, public QOpenGLFunctions
     {
     public:
 
@@ -45,19 +43,13 @@ namespace gt
 
         SriteRenderDelegate sriteRenderDelegate;
 
-        QtRenderer();
-        ~QtRenderer();
+        QtRender();
+        ~QtRender();
 
         void init() override;
-        void render(gref<GNode> scene) override;
+        void draw(gref<GNode> scene) override;
         void resize(int w, int h) override;
-
-//        void draw(gref<GNode> sprite, Transform2D::Global& parent);
     };
-
-
-
-
 }
 
 #endif // SRITERENDERDELEGATE_H

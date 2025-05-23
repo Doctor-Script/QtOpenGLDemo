@@ -4,7 +4,7 @@
 
 namespace gt
 {
-    QtRenderer::QtRenderer() :
+    QtRender::QtRender() :
         arrayBuf(QOpenGLBuffer::VertexBuffer),
         indexBuf(QOpenGLBuffer::IndexBuffer),
         sriteRenderDelegate(this)
@@ -12,12 +12,12 @@ namespace gt
         delegates.sprite = &sriteRenderDelegate;
     }
 
-    QtRenderer::~QtRenderer() {
+    QtRender::~QtRender() {
         arrayBuf.destroy();
         indexBuf.destroy();
     }
 
-    void QtRenderer::init()
+    void QtRender::init()
     {
         initializeOpenGLFunctions();
 
@@ -39,7 +39,7 @@ namespace gt
         indexBuf.allocate(6 * sizeof(GLushort));
     }
 
-    void QtRenderer::resize(int w, int h)
+    void QtRender::resize(int w, int h)
     {
         projection.setToIdentity();
         projection.ortho(0.0f, w, 0.0f, h, 0.5f, 200.0f);//TODO 0.5f, 200.0f??????????
@@ -50,17 +50,17 @@ namespace gt
         projection = projection * matrix;
     }
 
-    void QtRenderer::render(gref<GNode> scene)
+    void QtRender::draw(gref<GNode> scene)
     {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        Renderer::render(scene);
+        Render::draw(scene);
     }
 
 
 
 
-    SriteRenderDelegate::SriteRenderDelegate(QtRenderer* qtRenderer)
+    SriteRenderDelegate::SriteRenderDelegate(QtRender* qtRenderer)
     {
 this->qtRenderer = qtRenderer;
 
@@ -87,19 +87,19 @@ this->qtRenderer = qtRenderer;
         texture->setWrapMode(QOpenGLTexture::Repeat);
     }
 
-    void SriteRenderDelegate::render(Renderable* renderable, Transform2D::Cache& cache)
+    void SriteRenderDelegate::perform(Render::Item* renderable, Transform2D::Cache& cache)
     {
         GSprite* sprite = static_cast<GSprite*>(renderable);
 
-        float halfW = sprite->transform._width / 2.0f;
-        float halfH = sprite->transform._height / 2.0f;
+        float halfW = sprite->transform.width() / 2.0f;
+        float halfH = sprite->transform.height() / 2.0f;
 
 
             // TODO one rotation
-        Vector2 bl = cache.center + Vector2(-halfW, -halfH).rotate(cache.angle);
-        Vector2 br = cache.center + Vector2( halfW, -halfH).rotate(cache.angle);
-        Vector2 tr = cache.center + Vector2(-halfW,  halfH).rotate(cache.angle);
-        Vector2 tl = cache.center + Vector2( halfW,  halfH).rotate(cache.angle);
+        Vector2 bl = cache.position + Vector2(-halfW, -halfH).rotate(cache.angle);
+        Vector2 br = cache.position + Vector2( halfW, -halfH).rotate(cache.angle);
+        Vector2 tr = cache.position + Vector2(-halfW,  halfH).rotate(cache.angle);
+        Vector2 tl = cache.position + Vector2( halfW,  halfH).rotate(cache.angle);
 
 
 

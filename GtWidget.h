@@ -1,50 +1,27 @@
 #ifndef GT_GTWIDGET_H
 #define GT_GTWIDGET_H
 
-#include <QOpenGLFunctions>
-#include <QOpenGLTexture>
 #include <QOpenGLWidget>
-
-#include <QOpenGLShaderProgram>
-#include <QOpenGLBuffer>
 
 #include "gtengine.h"
 
-namespace gt {
-
-class GtWidget : public QOpenGLWidget, protected QOpenGLFunctions
+namespace gt
 {
-    Q_OBJECT
+    class GtWidget : public QOpenGLWidget
+    {
+        Q_OBJECT
 
-    std::unique_ptr<GWindow> _window;
-
-
-
-
+        std::unique_ptr<GWindow> _window;
 
 
+    public:
+        explicit GtWidget(GWindow* window, QWidget *parent = nullptr);
+        ~GtWidget();
 
-public:
-    explicit GtWidget(GWindow* window, QWidget *parent = nullptr);
-    ~GtWidget();
-
-    void initializeGL() override;
-    void resizeGL(int w, int h) override;
-    void paintGL() override;
-
-private:
-    QOpenGLShaderProgram program;
-
-    QOpenGLTexture *texture;
-
-    QMatrix4x4 projection;
-
-    QOpenGLBuffer arrayBuf;
-    QOpenGLBuffer indexBuf;
-
-//    void draw(gref<GSprite> sprite, Transform2D::Global& parent);
-};
-
-} // namespace gt
+        void initializeGL() override;
+        void resizeGL(int w, int h) override;
+        void paintGL() override;
+    };
+}
 
 #endif // GT_GTWIDGET_H
