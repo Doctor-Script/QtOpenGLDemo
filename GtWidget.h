@@ -42,7 +42,7 @@ private:
     QOpenGLBuffer arrayBuf;
     QOpenGLBuffer indexBuf;
 
-    void draw(gref<GSprite> sprite, Transform2D::Global& parent);
+//    void draw(gref<GSprite> sprite, Transform2D::Global& parent);
 };
 
 } // namespace gt

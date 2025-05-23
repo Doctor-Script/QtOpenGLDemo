@@ -9,6 +9,7 @@ namespace gt
         : QOpenGLWidget(parent), _window(window), indexBuf(QOpenGLBuffer::IndexBuffer)
     {
         _window->renderer = new QtRenderer();
+        _window->context.renderer = _window->renderer;
         _window->start();
     }
 

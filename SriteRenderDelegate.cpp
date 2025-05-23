@@ -4,9 +4,12 @@
 
 namespace gt
 {
-    QtRenderer::QtRenderer() : arrayBuf(QOpenGLBuffer::VertexBuffer), indexBuf(QOpenGLBuffer::IndexBuffer)
+    QtRenderer::QtRenderer() :
+        arrayBuf(QOpenGLBuffer::VertexBuffer),
+        indexBuf(QOpenGLBuffer::IndexBuffer),
+        sriteRenderDelegate(this)
     {
-
+        delegates.sprite = &sriteRenderDelegate;
     }
 
     QtRenderer::~QtRenderer() {
@@ -20,6 +23,51 @@ namespace gt
 
         glClearColor(0, 0, 0, 1);
 
+
+        sriteRenderDelegate.init();
+
+
+        glEnable(GL_DEPTH_TEST);
+        glEnable(GL_CULL_FACE);
+
+        arrayBuf.create();
+        arrayBuf.bind();
+        arrayBuf.allocate(20 * sizeof(float));
+
+        indexBuf.create();
+        indexBuf.bind();
+        indexBuf.allocate(6 * sizeof(GLushort));
+    }
+
+    void QtRenderer::resize(int w, int h)
+    {
+        projection.setToIdentity();
+        projection.ortho(0.0f, w, 0.0f, h, 0.5f, 200.0f);//TODO 0.5f, 200.0f??????????
+
+        QMatrix4x4 matrix;
+        matrix.translate(0.0, 0.0, -50.0);//TODO -50.0???????????????
+
+        projection = projection * matrix;
+    }
+
+    void QtRenderer::render(gref<GNode> scene)
+    {
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+        Renderer::render(scene);
+    }
+
+
+
+
+    SriteRenderDelegate::SriteRenderDelegate(QtRenderer* qtRenderer)
+    {
+this->qtRenderer = qtRenderer;
+
+    }
+
+    void SriteRenderDelegate::init()
+    {
         if (!program.addShaderFromSourceFile(QOpenGLShader::Vertex, ":/vshader.glsl"))
 //            close();
             return;
@@ -37,74 +85,46 @@ namespace gt
         texture->setMinificationFilter(QOpenGLTexture::Nearest);
         texture->setMagnificationFilter(QOpenGLTexture::Linear);
         texture->setWrapMode(QOpenGLTexture::Repeat);
-
-        glEnable(GL_DEPTH_TEST);
-        glEnable(GL_CULL_FACE);
-
-        arrayBuf.create();
-        arrayBuf.bind();
-        arrayBuf.allocate(20 * sizeof(float));
-
-        indexBuf.create();
-        indexBuf.bind();
-        indexBuf.allocate(6 * sizeof(GLushort));
     }
 
-    void QtRenderer::resize(int w, int h)
+    void SriteRenderDelegate::render(Renderable* renderable, Transform2D::Cache& cache)
     {
-        projection.setToIdentity();
-        projection.ortho(0.0f, 1.0f * w, 0.0f, 1.0f * h, 0.5f, 200.0f);
-    }
+        GSprite* sprite = static_cast<GSprite*>(renderable);
 
-    void QtRenderer::render(gref<GNode> scene)
-    {
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        float halfW = sprite->transform._width / 2.0f;
+        float halfH = sprite->transform._height / 2.0f;
 
-        texture->bind();
-        QMatrix4x4 matrix;
-        matrix.translate(0.0, 0.0, -50.0);
-        program.setUniformValue("mvp_matrix", projection * matrix);
-        program.setUniformValue("texture", 0);
 
-        Transform2D::Global none;
-        FOREACH_NODE(node, scene) {
-            draw(node->to<GNode2D>(), none);
-        }
-    }
+            // TODO one rotation
+        Vector2 bl = cache.center + Vector2(-halfW, -halfH).rotate(cache.angle);
+        Vector2 br = cache.center + Vector2( halfW, -halfH).rotate(cache.angle);
+        Vector2 tr = cache.center + Vector2(-halfW,  halfH).rotate(cache.angle);
+        Vector2 tl = cache.center + Vector2( halfW,  halfH).rotate(cache.angle);
 
-    void QtRenderer::draw(gref<GNode2D> sprite, Transform2D::Global& parent)
-    {
-        auto spriteGlobal = sprite->transform.globalOf(parent);
-        auto q = sprite->transform.vertices();
 
-        FOREACH_NODE(node, sprite)
-        {
-            draw(node->to<GNode2D>(), spriteGlobal);
-        }
-
-//        qDebug() << q.bl.x << ", " << q.bl.y;
-//        qDebug() << q.br.x << ", " << q.br.y;
-//        qDebug() << q.tr.x << ", " << q.tr.y;
-//        qDebug() << q.tl.x << ", " << q.tl.y;
-//        qDebug() << "--------------------";
 
         float vertices[] = {
-            q.bl.x, q.bl.y, 1.0f, 0.0f,  0.0f, // v0
-            q.br.x, q.br.y, 1.0f, 0.33f, 0.0f, // v1
-            q.tr.x, q.tr.y, 1.0f, 0.0f,  0.5f, // v2
-            q.tl.x, q.tl.y, 1.0f, 0.33f, 0.5f  // v3
+            bl.x, bl.y, 1.0f, 0.0f,  0.0f, // v0
+            br.x, br.y, 1.0f, 0.33f, 0.0f, // v1
+            tr.x, tr.y, 1.0f, 0.0f,  0.5f, // v2
+            tl.x, tl.y, 1.0f, 0.33f, 0.5f  // v3
         };
 
-        auto ptrV = arrayBuf.map(QOpenGLBuffer::WriteOnly);
+        auto ptrV = qtRenderer->arrayBuf.map(QOpenGLBuffer::WriteOnly);
         memcpy(ptrV, vertices, 20 * sizeof(float));
-        arrayBuf.unmap();
-        arrayBuf.bind();
+        qtRenderer->arrayBuf.unmap();
+        qtRenderer->arrayBuf.bind();
 
         GLushort indices[] = { 0, 1, 2, 3, 2, 1 };
-        auto ptrI = indexBuf.map(QOpenGLBuffer::WriteOnly);
+        auto ptrI = qtRenderer->indexBuf.map(QOpenGLBuffer::WriteOnly);
         memcpy(ptrI, indices, 6 * sizeof(GLushort));
-        indexBuf.unmap();
-        indexBuf.bind();
+        qtRenderer->indexBuf.unmap();
+        qtRenderer->indexBuf.bind();
+
+        texture->bind();
+
+        // Set modelview-projection matrix
+        program.setUniformValue("mvp_matrix", qtRenderer->projection);
 
         quintptr offset = 0;
 
@@ -118,15 +138,7 @@ namespace gt
         program.enableAttributeArray(texcoordLocation);
         program.setAttributeBuffer(texcoordLocation, GL_FLOAT, offset, 2, 5 * sizeof(float));
 
-        glDrawElements(GL_TRIANGLE_STRIP, 6, GL_UNSIGNED_SHORT, 0);
-
-
+        qtRenderer->glDrawElements(GL_TRIANGLE_STRIP, 6, GL_UNSIGNED_SHORT, 0);
     }
 
-
-
-    SriteRenderDelegate::SriteRenderDelegate()
-    {
-
-    }
 }

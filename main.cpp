@@ -6,10 +6,16 @@
 #include "GtWidget.h"
 #endif
 
-
+#include <iostream>
+#include <stdio.h>
+#include <QDebug>
 
 #include "gtengine.h"
 using namespace gt;
+
+class A {};
+class B {};
+class C : public A, public B {};
 
 class DemoWindow : public GWindow
 {
@@ -22,6 +28,10 @@ class DemoWindow : public GWindow
         s->transform.setY(100);
         s->transform.setAngle(45);
 
+        qDebug() << "asdasda";
+//        std::cout << s->state <<
+        printf("s state %x\n", s->state);
+
         auto s1 = s->child<GSprite>();
         s1->transform.setY(100);
         s1->transform.setAngle(45);
@@ -30,6 +40,9 @@ class DemoWindow : public GWindow
 
 int main(int argc, char *argv[])
 {
+//    A* a = new C;
+//    B* b = static_cast<B*>(a);
+
     QApplication app(argc, argv);
 
     QSurfaceFormat format;

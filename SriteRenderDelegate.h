@@ -14,17 +14,36 @@
 
 namespace gt
 {
-    class QtRenderer : public Renderer, protected QOpenGLFunctions
+    class QtRenderer;
+
+    class SriteRenderDelegate : public RenderDelegate//, protected QOpenGLFunctions
     {
     public:
+        QtRenderer* qtRenderer;
         QOpenGLShaderProgram program;
-
         QOpenGLTexture *texture;
+
+        SriteRenderDelegate(QtRenderer* qtRenderer);
+
+        void init() override;
+//        void render(Renderable* renderable) override;
+        void render(Renderable* renderable, Transform2D::Cache& cache) override;
+    };
+
+    class QtRenderer : public Renderer, public QOpenGLFunctions
+    {
+    public:
+
+//        QOpenGLShaderProgram program;
+
+//        QOpenGLTexture *texture;
 
         QMatrix4x4 projection;
 
         QOpenGLBuffer arrayBuf;
         QOpenGLBuffer indexBuf;
+
+        SriteRenderDelegate sriteRenderDelegate;
 
         QtRenderer();
         ~QtRenderer();
@@ -33,19 +52,12 @@ namespace gt
         void render(gref<GNode> scene) override;
         void resize(int w, int h) override;
 
-        void draw(gref<GNode2D> sprite, Transform2D::Global& parent);
+//        void draw(gref<GNode> sprite, Transform2D::Global& parent);
     };
 
-    class SriteRenderDelegate : public RenderDelegate, protected QOpenGLFunctions
-    {
-    public:
 
 
 
-        SriteRenderDelegate();
-
-
-    };
 }
 
 #endif // SRITERENDERDELEGATE_H
