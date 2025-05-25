@@ -1,9 +1,9 @@
-#ifndef GT_GTWIDGET_H
-#define GT_GTWIDGET_H
+#pragma once
 
 #include <QOpenGLWidget>
 
-#include "gtengine.h"
+#include "gtrendering/QtRender.h"
+#include "GWindow.h"
 
 namespace gt
 {
@@ -11,17 +11,17 @@ namespace gt
     {
         Q_OBJECT
 
-        std::unique_ptr<GWindow> _window;
+        QtRender _render;
+        GWindow* _window;
 
+        // TODO check _window destruction. Nodes tree should be destroyed before window
 
     public:
         explicit GtWidget(GWindow* window, QWidget *parent = nullptr);
         ~GtWidget();
 
         void initializeGL() override;
-        void resizeGL(int w, int h) override;
+        void resizeGL(int width, int height) override;
         void paintGL() override;
     };
 }
-
-#endif // GT_GTWIDGET_H

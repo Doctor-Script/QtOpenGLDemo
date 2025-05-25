@@ -1,35 +1,29 @@
 #include "GtWidget.h"
-#include "SriteRenderDelegate.h"
-
-//#include "sprite/Transform2D.h"
 
 namespace gt
 {
     GtWidget::GtWidget(GWindow* window, QWidget *parent)
         : QOpenGLWidget(parent), _window(window)
     {
-        _window->render = new QtRender();
-        _window->context.render = _window->render;
+        _window->init(&_render);
         _window->start();
     }
 
-    GtWidget::~GtWidget()
-    {
-        delete _window->render;
+    GtWidget::~GtWidget() {
+        delete _window;
     }
 
-    void GtWidget::initializeGL()
-    {
-        _window->render->init();
+    void GtWidget::initializeGL() {
+        _render.init();
     }
 
-    void GtWidget::resizeGL(int w, int h)
+    void GtWidget::resizeGL(int width, int height)
     {
-         _window->render->resize(w, h);
+        _window->resize(static_cast<float>(width), static_cast<float>(height));
+         _render.resize(width, height);
     }
 
-    void GtWidget::paintGL()
-    {
-         _window->render->draw(_window->_scene);
+    void GtWidget::paintGL() {
+        _render.draw(_window->scene());
     }
 }

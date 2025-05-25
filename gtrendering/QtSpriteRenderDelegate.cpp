@@ -1,84 +1,29 @@
-#include "SriteRenderDelegate.h"
+#include "gtrendering/QtSpriteRenderDelegate.h"
 
-#include "gtengine/sprite/Transform2D.h"
+#include "gtrendering/QtRender.h"
+#include "sprite/GSprite.h"
 
 namespace gt
 {
-    QtRender::QtRender() :
-        arrayBuf(QOpenGLBuffer::VertexBuffer),
-        indexBuf(QOpenGLBuffer::IndexBuffer),
-        sriteRenderDelegate(this)
+    QtSpriteRenderDelegate::QtSpriteRenderDelegate(QtRender* qtRenderer)
     {
-        delegates.sprite = &sriteRenderDelegate;
-    }
-
-    QtRender::~QtRender() {
-        arrayBuf.destroy();
-        indexBuf.destroy();
-    }
-
-    void QtRender::init()
-    {
-        initializeOpenGLFunctions();
-
-        glClearColor(0, 0, 0, 1);
-
-
-        sriteRenderDelegate.init();
-
-
-        glEnable(GL_DEPTH_TEST);
-        glEnable(GL_CULL_FACE);
-
-        arrayBuf.create();
-        arrayBuf.bind();
-        arrayBuf.allocate(20 * sizeof(float));
-
-        indexBuf.create();
-        indexBuf.bind();
-        indexBuf.allocate(6 * sizeof(GLushort));
-    }
-
-    void QtRender::resize(int w, int h)
-    {
-        projection.setToIdentity();
-        projection.ortho(0.0f, w, 0.0f, h, 0.5f, 200.0f);//TODO 0.5f, 200.0f??????????
-
-        QMatrix4x4 matrix;
-        matrix.translate(0.0, 0.0, -50.0);//TODO -50.0???????????????
-
-        projection = projection * matrix;
-    }
-
-    void QtRender::draw(gref<GNode> scene)
-    {
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-        Render::draw(scene);
-    }
-
-
-
-
-    SriteRenderDelegate::SriteRenderDelegate(QtRender* qtRenderer)
-    {
-this->qtRenderer = qtRenderer;
+    this->qtRenderer = qtRenderer;
 
     }
 
-    void SriteRenderDelegate::init()
+    void QtSpriteRenderDelegate::init()
     {
         if (!program.addShaderFromSourceFile(QOpenGLShader::Vertex, ":/vshader.glsl"))
-//            close();
+    //            close();
             return;
         if (!program.addShaderFromSourceFile(QOpenGLShader::Fragment, ":/fshader.glsl"))
-//            close();
+    //            close();
             return;
         if (!program.link())
-//            close();
+    //            close();
             return;
         if (!program.bind())
-//            close();
+    //            close();
             return;
 
         texture = new QOpenGLTexture(QImage(":/cube.png").mirrored());
@@ -87,7 +32,7 @@ this->qtRenderer = qtRenderer;
         texture->setWrapMode(QOpenGLTexture::Repeat);
     }
 
-    void SriteRenderDelegate::perform(Render::Item* renderable, Transform2D::Cache& cache)
+    void QtSpriteRenderDelegate::perform(Render::Item* renderable, Transform2D::Cache& cache)
     {
         GSprite* sprite = static_cast<GSprite*>(renderable);
 
@@ -140,5 +85,4 @@ this->qtRenderer = qtRenderer;
 
         qtRenderer->glDrawElements(GL_TRIANGLE_STRIP, 6, GL_UNSIGNED_SHORT, 0);
     }
-
 }

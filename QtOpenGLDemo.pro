@@ -11,12 +11,14 @@ CONFIG += c++11
 SOURCES += \
     main.cpp \
     GtWidget.cpp \
-    SriteRenderDelegate.cpp \
+    gtrendering/QtRender.cpp \
+    gtrendering/QtSpriteRenderDelegate.cpp \
     $$files(gtengine/*.cpp, true)
 
 HEADERS += \
     GtWidget.h \
-    SriteRenderDelegate.h \
+    gtrendering/QtRender.h \
+    gtrendering/QtSpriteRenderDelegate.h \
     $$files(gtengine/*.h, true)
 
 RESOURCES += \

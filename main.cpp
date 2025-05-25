@@ -20,7 +20,7 @@ class DemoWindow : public GWindow
     {
         GWindow::start();
 
-        auto s = _scene->child<GSprite>();
+        auto s = child<GSprite>();
         s->transform.setX(100);
         s->transform.setY(100);
         s->transform.setAngle(45);
