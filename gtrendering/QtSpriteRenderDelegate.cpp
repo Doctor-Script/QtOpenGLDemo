@@ -1,7 +1,7 @@
 #include "gtrendering/QtSpriteRenderDelegate.h"
 
 #include "gtrendering/QtRender.h"
-#include "sprite/GSprite.h"
+#include "planar/Sprite.h"
 
 namespace gt
 {
@@ -34,7 +34,7 @@ namespace gt
 
     void QtSpriteRenderDelegate::perform(Render::Item* renderable, Transform2D::Cache& cache)
     {
-        GSprite* sprite = static_cast<GSprite*>(renderable);
+        Sprite* sprite = static_cast<Sprite*>(renderable);
 
         float halfW = sprite->transform.width() / 2.0f;
         float halfH = sprite->transform.height() / 2.0f;

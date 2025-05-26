@@ -3,7 +3,7 @@
 #include <QOpenGLTexture>
 #include <QOpenGLShaderProgram>
 
-#include "gtengine/render/Render.h"
+#include "gtengine/rendering/Render.h"
 
 namespace gt
 {

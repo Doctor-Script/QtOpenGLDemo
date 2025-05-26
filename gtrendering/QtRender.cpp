@@ -48,7 +48,7 @@ namespace gt
         projection = projection * matrix;
     }
 
-    void QtRender::draw(gref<GNode> scene)
+    void QtRender::draw(gref<Node> scene)
     {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 

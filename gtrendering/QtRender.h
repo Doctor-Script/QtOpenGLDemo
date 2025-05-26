@@ -4,7 +4,7 @@
 //#include <QOpenGLShaderProgram>
 #include <QOpenGLBuffer>
 
-#include "gtengine/render/Render.h"
+#include "gtengine/rendering/Render.h"
 #include "gtrendering/QtSpriteRenderDelegate.h"
 
 namespace gt
@@ -28,7 +28,7 @@ namespace gt
         ~QtRender();
 
         void init() override;
-        void draw(gref<GNode> scene) override;
+        void draw(gref<Node> scene) override;
         void resize(int w, int h) override;
     };
 }

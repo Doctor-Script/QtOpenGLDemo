@@ -3,7 +3,7 @@
 #include <QOpenGLWidget>
 
 #include "gtrendering/QtRender.h"
-#include "GWindow.h"
+#include "Window.h"
 
 namespace gt
 {
@@ -12,12 +12,12 @@ namespace gt
         Q_OBJECT
 
         QtRender _render;
-        GWindow* _window;
+        Window* _window;
 
         // TODO check _window destruction. Nodes tree should be destroyed before window
 
     public:
-        explicit GtWidget(GWindow* window, QWidget *parent = nullptr);
+        explicit GtWidget(Window* window, QWidget *parent = nullptr);
         ~GtWidget();
 
         void initializeGL() override;

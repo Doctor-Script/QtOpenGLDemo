@@ -14,18 +14,18 @@
 using namespace gt;
 
 
-class DemoWindow : public GWindow
+class DemoWindow : public Window
 {
     void start() override
     {
-        GWindow::start();
+        Window::start();
 
-        auto s = child<GSprite>();
+        auto s = child<Sprite>();
         s->transform.setX(100);
         s->transform.setY(100);
         s->transform.setAngle(45);
 
-        auto s1 = s->child<GSprite>();
+        auto s1 = s->child<Sprite>();
         s1->transform.setY(100);
         s1->transform.setAngle(45);
     }
