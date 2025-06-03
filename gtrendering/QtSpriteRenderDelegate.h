@@ -13,7 +13,6 @@ namespace gt
     {
     public:
         QtRender* qtRenderer;
-        QOpenGLShaderProgram program;
         QOpenGLTexture *texture;
 
         QtSpriteRenderDelegate(QtRender* qtRenderer);

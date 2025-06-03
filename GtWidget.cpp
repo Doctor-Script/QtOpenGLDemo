@@ -6,7 +6,6 @@ namespace gt
         : QOpenGLWidget(parent), _window(window)
     {
         _window->init(&_render);
-        _window->start();
     }
 
     GtWidget::~GtWidget() {
@@ -15,12 +14,13 @@ namespace gt
 
     void GtWidget::initializeGL() {
         _render.init();
+        _window->start();
     }
 
     void GtWidget::resizeGL(int width, int height)
     {
         _window->resize(static_cast<float>(width), static_cast<float>(height));
-         _render.resize(width, height);
+        _render.resize(width, height);
     }
 
     void GtWidget::paintGL() {

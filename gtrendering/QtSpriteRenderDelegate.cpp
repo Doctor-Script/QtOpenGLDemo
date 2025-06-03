@@ -7,25 +7,11 @@ namespace gt
 {
     QtSpriteRenderDelegate::QtSpriteRenderDelegate(QtRender* qtRenderer)
     {
-    this->qtRenderer = qtRenderer;
-
+        this->qtRenderer = qtRenderer;
     }
 
     void QtSpriteRenderDelegate::init()
     {
-        if (!program.addShaderFromSourceFile(QOpenGLShader::Vertex, ":/vshader.glsl"))
-    //            close();
-            return;
-        if (!program.addShaderFromSourceFile(QOpenGLShader::Fragment, ":/fshader.glsl"))
-    //            close();
-            return;
-        if (!program.link())
-    //            close();
-            return;
-        if (!program.bind())
-    //            close();
-            return;
-
         texture = new QOpenGLTexture(QImage(":/cube.png").mirrored());
         texture->setMinificationFilter(QOpenGLTexture::Nearest);
         texture->setMagnificationFilter(QOpenGLTexture::Linear);
@@ -35,6 +21,8 @@ namespace gt
     void QtSpriteRenderDelegate::perform(Render::Item* renderable, Transform2D::Cache& cache)
     {
         Sprite* sprite = static_cast<Sprite*>(renderable);
+        auto shader = static_cast<QtShader*>(sprite->shader);
+        shader->use();
 
         float halfW = sprite->transform.width() / 2.0f;
         float halfH = sprite->transform.height() / 2.0f;
@@ -69,19 +57,19 @@ namespace gt
         texture->bind();
 
         // Set modelview-projection matrix
-        program.setUniformValue("mvp_matrix", qtRenderer->projection);
+        shader->_program.setUniformValue("mvp_matrix", qtRenderer->projection);
 
         quintptr offset = 0;
 
-        int vertexLocation = program.attributeLocation("a_position");
-        program.enableAttributeArray(vertexLocation);
-        program.setAttributeBuffer(vertexLocation, GL_FLOAT, offset, 3, 5 * sizeof(float));
+        int vertexLocation = shader->_program.attributeLocation("a_position");
+        shader->_program.enableAttributeArray(vertexLocation);
+        shader->_program.setAttributeBuffer(vertexLocation, GL_FLOAT, offset, 3, 5 * sizeof(float));
 
         offset += sizeof(QVector3D);
 
-        int texcoordLocation = program.attributeLocation("a_texcoord");
-        program.enableAttributeArray(texcoordLocation);
-        program.setAttributeBuffer(texcoordLocation, GL_FLOAT, offset, 2, 5 * sizeof(float));
+        int texcoordLocation = shader->_program.attributeLocation("a_texcoord");
+        shader->_program.enableAttributeArray(texcoordLocation);
+        shader->_program.setAttributeBuffer(texcoordLocation, GL_FLOAT, offset, 2, 5 * sizeof(float));
 
         qtRenderer->glDrawElements(GL_TRIANGLE_STRIP, 6, GL_UNSIGNED_SHORT, 0);
     }

@@ -17,7 +17,10 @@ namespace gt
 
     void QtRender::init()
     {
+        Render::init();
+
         initializeOpenGLFunctions();
+
 
         glClearColor(0, 0, 0, 1);
 
@@ -25,7 +28,7 @@ namespace gt
         spriteRenderDelegate.init();
 
 
-        glEnable(GL_DEPTH_TEST);
+//        glEnable(GL_DEPTH_TEST);
         glEnable(GL_CULL_FACE);
 
         arrayBuf.create();
@@ -37,10 +40,10 @@ namespace gt
         indexBuf.allocate(6 * sizeof(GLushort));
     }
 
-    void QtRender::resize(int w, int h)
+    void QtRender::resize(int width, int height)
     {
         projection.setToIdentity();
-        projection.ortho(0.0f, w, 0.0f, h, 0.5f, 200.0f);//TODO 0.5f, 200.0f??????????
+        projection.ortho(0.0f, width, 0.0f, height, 0.5f, 200.0f);//TODO 0.5f, 200.0f??????????
 
         QMatrix4x4 matrix;
         matrix.translate(0.0, 0.0, -50.0);//TODO -50.0???????????????
