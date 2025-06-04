@@ -20,12 +20,16 @@ class DemoWindow : public Window
     {
         Window::start();
 
+        auto tex = resources().texture(":/cube.png");
+
         auto s = child<Sprite>();
+        s->setTexture(tex);
         s->transform.setX(100);
         s->transform.setY(100);
         s->transform.setAngle(45);
 
         auto s1 = s->child<Sprite>();
+        s1->setTexture(tex);
         s1->transform.setY(100);
         s1->transform.setAngle(45);
     }

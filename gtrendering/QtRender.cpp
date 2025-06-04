@@ -25,9 +25,6 @@ namespace gt
         glClearColor(0, 0, 0, 1);
 
 
-        spriteRenderDelegate.init();
-
-
 //        glEnable(GL_DEPTH_TEST);
         glEnable(GL_CULL_FACE);
 

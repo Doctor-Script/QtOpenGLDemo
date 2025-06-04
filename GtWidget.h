@@ -2,8 +2,9 @@
 
 #include <QOpenGLWidget>
 
-#include "gtrendering/QtRender.h"
 #include "Window.h"
+#include "gtrendering/QtRender.h"
+#include "qtresources/QtResources.h"
 
 namespace gt
 {
@@ -11,8 +12,9 @@ namespace gt
     {
         Q_OBJECT
 
-        QtRender _render;
         Window* _window;
+        QtRender _render;
+        QtResources _resources;
 
         // TODO check _window destruction. Nodes tree should be destroyed before window
 

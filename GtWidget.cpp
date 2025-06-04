@@ -5,7 +5,7 @@ namespace gt
     GtWidget::GtWidget(Window* window, QWidget *parent)
         : QOpenGLWidget(parent), _window(window)
     {
-        _window->init(&_render);
+        _window->init(&_render, &_resources);
     }
 
     GtWidget::~GtWidget() {
