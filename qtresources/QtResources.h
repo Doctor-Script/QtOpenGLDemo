@@ -10,7 +10,7 @@ namespace gt
     class QtResources : public Resources
     {
     public:
-        gref<Texture> texture(const char * path) override;
+        gref<Texture> texture(std::string path) override;
     };
 }
 

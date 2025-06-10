@@ -2,16 +2,17 @@
 #define QTTEXTURE_H
 
 #include "resources/Texture.h"
-
+#include <GL/gl.h>
 #include <QOpenGLTexture>
 
 namespace gt
 {
     class QtTexture : public Texture
     {
-        QOpenGLTexture* _impl;
+        GLuint _id;
+//        QOpenGLTexture* _impl;
     public:
-        QtTexture(const char* path);
+        QtTexture(std::string path);
 
         bool bind() override;
     };
