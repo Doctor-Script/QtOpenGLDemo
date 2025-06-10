@@ -20,7 +20,15 @@ class DemoWindow : public Window
     {
         Window::start();
 
-        auto tex = resources().texture(":/cube.png");
+//        auto tex = resources().texture(":/cube.png");
+
+        auto tex = resources().texture("folder/flower.jpg");
+
+        printf("%d\n", tex.use_count());
+
+        auto tex2 = resources().texture("folder/flower.jpg");
+
+        printf("%d\n", tex.use_count());
 
         auto s = child<Sprite>();
         s->setTexture(tex);

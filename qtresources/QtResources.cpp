@@ -4,11 +4,20 @@
 
 namespace gt
 {
-    gref<Texture> QtResources::texture(const char *path) {
+    gref<Texture> QtResources::texture(const char *path)
+    {
+        if (_loaded.count(path) > 0) {
+            return s_cast<Texture>(_loaded[path]);
+        }
 
-        // TODO Chacher loaded resources
-        // TODO Unify path (remove `:` from files in qt)
+        char fullPath[GT_RESOURCES_MAX_PATH] = ":/resources/";
 
-        return std::make_shared<QtTexture>(path);
+        //TODO check full path length
+
+        strncat(fullPath, path, GT_RESOURCES_MAX_PATH);
+        printf("%s\n", fullPath);
+        auto result = std::make_shared<QtTexture>(fullPath);
+        _loaded.emplace(path, result);
+        return result;
     }
 }

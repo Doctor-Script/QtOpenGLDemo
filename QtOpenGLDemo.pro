@@ -9,6 +9,7 @@ CONFIG += c++11
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+#    gtengine/resources/Resource.cpp \
     main.cpp \
     GtWidget.cpp \
     gtrendering/QtShader.cpp \
@@ -20,6 +21,7 @@ SOURCES += \
 
 HEADERS += \
     GtWidget.h \
+#    gtengine/resources/Resource.h \
     gtrendering/QtShader.h \
     gtrendering/QtRender.h \
     gtrendering/QtSpriteRenderDelegate.h \
