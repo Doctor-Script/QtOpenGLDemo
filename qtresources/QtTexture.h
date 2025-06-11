@@ -10,7 +10,6 @@ namespace gt
     class QtTexture : public Texture
     {
         GLuint _id;
-//        QOpenGLTexture* _impl;
     public:
         QtTexture(std::string path);
 
