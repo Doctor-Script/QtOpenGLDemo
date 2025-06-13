@@ -22,11 +22,14 @@ class DemoWindow : public Window
 
 //        auto tex = resources().texture(":/cube.png");
 
-        auto tex = resources().texture("folder/flower.jpg");
+//        auto tex = resources().texture("folder/flower.jpg");
+        auto tex = resources().get<Texture>("folder/flower.jpg");
 
         printf("%d\n", tex.use_count());
 
-        auto tex2 = resources().texture("folder/flower.jpg");
+//        auto tex2 = resources().texture("folder/flower.jpg");
+        auto tex2 = resources().get<Texture>("folder/flower.jpg");
+//        auto tex2 = resources().get<Texture>("cube.png");
 
         printf("%d\n", tex.use_count());
 
@@ -37,7 +40,7 @@ class DemoWindow : public Window
         s->transform.setAngle(45);
 
         auto s1 = s->child<Sprite>();
-        s1->setTexture(tex);
+        s1->setTexture(tex2);
         s1->transform.setY(100);
         s1->transform.setAngle(45);
     }

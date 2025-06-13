@@ -1,5 +1,7 @@
 #include "GtWidget.h"
 
+#include "gtpatform/gl.h"
+
 namespace gt
 {
     GtWidget::GtWidget(Window* window, QWidget *parent)
@@ -12,7 +14,9 @@ namespace gt
         delete _window;
     }
 
-    void GtWidget::initializeGL() {
+    void GtWidget::initializeGL()
+    {
+        gl::_functions = QOpenGLContext::currentContext()->functions();
         _render.init();
         _window->start();
     }

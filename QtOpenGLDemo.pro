@@ -1,3 +1,4 @@
+#QT       += core gui opengl
 QT       += core gui
 LIBS += -lopengl32
 
@@ -10,25 +11,21 @@ CONFIG += c++11
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-#    gtengine/resources/Resource.cpp \
     main.cpp \
     GtWidget.cpp \
     gtrendering/QtShader.cpp \
     gtrendering/QtRender.cpp \
     gtrendering/QtSpriteRenderDelegate.cpp \
-    qtresources/QtTexture.cpp \
-    qtresources/QtResources.cpp \
-    $$files(gtengine/*.cpp, true)
+    $$files(gtengine/*.cpp, true) \
+    $$files(gtpatform/*.cpp, true)
 
 HEADERS += \
     GtWidget.h \
-#    gtengine/resources/Resource.h \
     gtrendering/QtShader.h \
     gtrendering/QtRender.h \
     gtrendering/QtSpriteRenderDelegate.h \
-    qtresources/QtTexture.h \
-    qtresources/QtResources.h \
-    $$files(gtengine/*.h, true)
+    $$files(gtengine/*.h, true) \
+    $$files(gtpatform/*.h, true)
 
 RESOURCES += \
     shaders.qrc \
