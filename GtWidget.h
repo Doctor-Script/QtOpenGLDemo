@@ -4,7 +4,6 @@
 
 #include "Window.h"
 #include "gtrendering/QtRender.h"
-#include "resources/ResourceManager.h"
 
 namespace gt
 {
@@ -14,7 +13,6 @@ namespace gt
 
         Window* _window;
         QtRender _render;
-        ResourceManager _resources;
 
         // TODO check _window destruction. Nodes tree should be destroyed before window
 

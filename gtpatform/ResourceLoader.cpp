@@ -14,6 +14,6 @@ namespace gt
         std::string prefix(":/resources/");
         std::string fullPath = prefix.append(name);
         auto img = QImage(fullPath.c_str());
-        result = std::make_shared<Texture>(fullPath.c_str(), img.constBits(), img.width(), img.height());
+        result = std::make_shared<Texture>(name, img.constBits(), img.width(), img.height());
     }
 }
