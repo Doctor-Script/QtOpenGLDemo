@@ -6,12 +6,10 @@
 
 namespace gt
 {
-    class gl
+    struct gl
     {
-        friend class GtWidget;
         static QOpenGLFunctions* _functions;
 
-    public:
         WRAP_GL void GenTextures(GLsizei n, GLuint *textures) {
             ::glGenTextures(n, textures);
         }
@@ -30,6 +28,10 @@ namespace gt
 
         WRAP_GL void TexParameteri(GLenum target, GLenum pname, GLint param) {
             ::glTexParameteri(target, pname, param);
+        }
+
+        WRAP_GL void Clear(GLbitfield mask) {
+            ::glClear(mask);
         }
 
         // TODO

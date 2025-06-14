@@ -1,7 +1,6 @@
 #pragma once
 
 #include <QOpenGLFunctions>
-//#include <QOpenGLShaderProgram>
 #include <QOpenGLBuffer>
 
 #include "gtengine/rendering/Render.h"
@@ -30,7 +29,6 @@ namespace gt
             return new QtShader(vertex, fragment);
         }
 
-        void draw(gref<Node> scene) override;
-        void resize(int w, int h);
+        void resize(int w, int h) override;
     };
 }

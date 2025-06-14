@@ -7,21 +7,32 @@
 
 namespace gt
 {
-    class GtWidget : public QOpenGLWidget
+    template<typename TWindow> class GtWidget : public QOpenGLWidget
     {
-        Q_OBJECT
+//        Q_OBJECT
 
-        Window* _window;
         QtRender _render;
-
-        // TODO check _window destruction. Nodes tree should be destroyed before window
+        TWindow _window;
 
     public:
-        explicit GtWidget(Window* window, QWidget *parent = nullptr);
-        ~GtWidget();
+        explicit GtWidget(void* arg, QWidget *parent = nullptr)
+            : QOpenGLWidget(parent), _window(arg, &_render)
+        {
+        }
 
-        void initializeGL() override;
-        void resizeGL(int width, int height) override;
-        void paintGL() override;
+        void initializeGL()
+        {
+            gl::_functions = QOpenGLContext::currentContext()->functions();
+            _render.init();
+            _window.start();
+        }
+
+        void resizeGL(int width, int height) {
+            _window.resize(width, height);
+        }
+
+        void paintGL() {
+            _window.draw();
+        }
     };
 }

@@ -16,24 +16,22 @@ using namespace gt;
 
 class DemoWindow : public Window
 {
+public:
+    DemoWindow(void* arg, Render* render) : Window(arg, render) { }
+
     void start() override
     {
         Window::start();
 
 //        auto tex = resources().texture(":/cube.png");
 
-//        auto tex = resources().texture("folder/flower.jpg");
         auto tex = resources().get<Texture>("folder/flower.jpg");
-
         printf("%d\n", tex.use_count());
 
-//        auto tex2 = resources().texture("folder/flower.jpg");
         auto tex2 = resources().get<Texture>("folder/flower.jpg");
-//        auto tex2 = resources().get<Texture>("cube.png");
-
         printf("%d\n", tex.use_count());
 
-        auto s = child<Sprite>();
+        auto s = canvas()->child<Sprite>();
         s->setTexture(tex);
         s->transform.setX(100);
         s->transform.setY(100);
@@ -60,7 +58,7 @@ int main(int argc, char *argv[])
 
 
 #ifndef QT_NO_OPENGL
-    GtWidget widget(new DemoWindow());
+    GtWidget<DemoWindow> widget(nullptr);
     widget.show();
 #else
     QLabel note("OpenGL Support required");
