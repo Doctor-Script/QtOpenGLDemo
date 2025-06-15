@@ -13,11 +13,9 @@ namespace gt
     {
     public:
         QtRender* qtRenderer;
-        QOpenGLTexture *texture;
 
         QtSpriteRenderDelegate(QtRender* qtRenderer);
 
-        void init();
         void perform(Render::Item* renderable, Transform2D::Cache& cache) override;
     };
 }

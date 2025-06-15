@@ -25,9 +25,6 @@ namespace gt
         glClearColor(0, 0, 0, 1);
 
 
-        spriteRenderDelegate.init();
-
-
 //        glEnable(GL_DEPTH_TEST);
         glEnable(GL_CULL_FACE);
 
@@ -49,12 +46,5 @@ namespace gt
         matrix.translate(0.0, 0.0, -50.0);//TODO -50.0???????????????
 
         projection = projection * matrix;
-    }
-
-    void QtRender::draw(gref<Node> scene)
-    {
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-        Render::draw(scene);
     }
 }
