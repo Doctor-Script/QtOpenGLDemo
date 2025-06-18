@@ -8,19 +8,19 @@ namespace gt
 
         if (!_program.addCacheableShaderFromSourceCode(QOpenGLShader::Vertex, vertex)) {
             _ok = false;
-            // TODO LOG
+            qDebug() << "Vertex shader failed";
             return;
         }
 
         if (!_program.addCacheableShaderFromSourceCode(QOpenGLShader::Fragment, fragment)) {
             _ok = false;
-            // TODO LOG
+            qDebug() << "Fragment shader failed";
             return;
         }
 
         if (!_program.link()) {
             _ok = false;
-            // TODO LOG
+            qDebug() << "Link program failed";
             return;
         }
     }

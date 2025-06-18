@@ -58,6 +58,14 @@ namespace gt
             QTGL(glGetProgramiv(program, pname, params));
         }
 
+        WRAP_GL void GetProgramInfoLog(GLuint program, GLsizei bufsize, GLsizei* length, char* infolog) {
+            QTGL(glGetProgramInfoLog(program, bufsize, length, infolog));
+        }
+
+        WRAP_GL void DeleteProgram(GLuint program) {
+            QTGL(glDeleteProgram(program));
+        }
+
 
         WRAP_GL GLuint CreateShader(GLenum type) {
             return QTGL(glCreateShader(type));
