@@ -2,36 +2,39 @@
 
 #include <QOpenGLFunctions>
 
-#define WRAP_GL static inline
 
 namespace gt
 {
+#define WRAP_GL static inline
+#define NATIVEGL(f) ::f
+#define QTGL(f) _functions->f
+
     struct gl
     {
         static QOpenGLFunctions* _functions;
 
         WRAP_GL void GenTextures(GLsizei n, GLuint *textures) {
-            ::glGenTextures(n, textures);
+            NATIVEGL(glGenTextures(n, textures));
         }
 
         WRAP_GL void DeleteTextures(GLsizei n, const GLuint *textures) {
-            ::glDeleteTextures(n, textures);
+            NATIVEGL(glDeleteTextures(n, textures));
         }
 
         WRAP_GL void BindTexture(GLenum target, GLuint texture) {
-            ::glBindTexture(target, texture);
+            NATIVEGL(glBindTexture(target, texture));
         }
 
         WRAP_GL void TexImage2D(GLenum target, GLint level, GLint internalformat, GLsizei width, GLsizei height, GLint border, GLenum format, GLenum type, const GLvoid *pixels) {
-            ::glTexImage2D(target, level, internalformat, width, height, border, format, type, pixels);
+            NATIVEGL(glTexImage2D(target, level, internalformat, width, height, border, format, type, pixels));
         }
 
         WRAP_GL void TexParameteri(GLenum target, GLenum pname, GLint param) {
-            ::glTexParameteri(target, pname, param);
+            NATIVEGL(glTexParameteri(target, pname, param));
         }
 
         WRAP_GL void Clear(GLbitfield mask) {
-            ::glClear(mask);
+            NATIVEGL(glClear(mask));
         }
 
         // TODO
@@ -39,7 +42,53 @@ namespace gt
         //glGenerateMipmap = (PFNGLGENERATEMIPMAPPROC)wglGetProcAddress("glGenerateMipmap");
         //glGenerateMipmap(GL_TEXTURE_2D);
         WRAP_GL void GenerateMipmap(GLenum target) {
-            _functions->glGenerateMipmap(target);
+            QTGL(glGenerateMipmap(target));
+        }
+
+
+        WRAP_GL GLuint CreateProgram() {
+            return QTGL(glCreateProgram());
+        }
+
+        WRAP_GL void LinkProgram(GLuint program) {
+            QTGL(glLinkProgram(program));
+        }
+
+        WRAP_GL void GetProgramiv(GLuint program, GLenum pname, GLint* params) {
+            QTGL(glGetProgramiv(program, pname, params));
+        }
+
+
+        WRAP_GL GLuint CreateShader(GLenum type) {
+            return QTGL(glCreateShader(type));
+        }
+
+        WRAP_GL void ShaderSource(GLuint shader, GLsizei count, const char** string, const GLint* length) {
+            QTGL(glShaderSource(shader, count, string, length));
+        }
+
+        WRAP_GL void CompileShader(GLuint shader) {
+            QTGL(glCompileShader(shader));
+        }
+
+        WRAP_GL void GetShaderiv(GLuint shader, GLenum pname, GLint* params) {
+            QTGL(glGetShaderiv(shader, pname, params));
+        }
+
+        WRAP_GL void GetShaderInfoLog(GLuint shader, GLsizei bufsize, GLsizei* length, char* infolog) {
+            QTGL(glGetShaderInfoLog(shader, bufsize, length, infolog));
+        }
+
+        WRAP_GL void DeleteShader(GLuint shader) {
+            QTGL(glDeleteShader(shader));
+        }
+
+        WRAP_GL void AttachShader(GLuint program, GLuint shader) {
+            QTGL(glAttachShader(program, shader));
         }
     };
+
+#undef WRAP_GL
+#undef NATIVEGL
+#undef QTGL
 }
