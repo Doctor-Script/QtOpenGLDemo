@@ -13,8 +13,6 @@ namespace gt
     class QtRender : public Render, public QOpenGLFunctions
     {
     public:
-        QMatrix4x4 projection;
-
         QOpenGLBuffer arrayBuf;
         QOpenGLBuffer indexBuf;
 
@@ -28,7 +26,5 @@ namespace gt
         Shader* shader(const char* vertex, const char* fragment) override {
             return new QtShader(vertex, fragment);
         }
-
-        void resize(int w, int h) override;
     };
 }

@@ -23,18 +23,21 @@ namespace gt
         float halfH = sprite->transform.height() / 2.0f;
 
 
-            // TODO one rotation !!!
+        // TODO one rotation !!!
+
         Vector2 bl = cache.position + Vector2(-halfW, -halfH).rotate(cache.angle);
         Vector2 br = cache.position + Vector2( halfW, -halfH).rotate(cache.angle);
         Vector2 tl = cache.position + Vector2(-halfW,  halfH).rotate(cache.angle);
         Vector2 tr = cache.position + Vector2( halfW,  halfH).rotate(cache.angle);
 
 
+        // TODO Remove z axis from vertices !!!
+
         float vertices[] = {
-            bl.x, bl.y, 1.0f, texture->u0(), texture->v0(), // v0
-            br.x, br.y, 1.0f, texture->u1(), texture->v0(), // v1
-            tl.x, tl.y, 1.0f, texture->u0(), texture->v1(), // v2
-            tr.x, tr.y, 1.0f, texture->u1(), texture->v1()  // v3
+            bl.x, bl.y, 0.0f, texture->u0(), texture->v0(), // v0
+            br.x, br.y, 0.0f, texture->u1(), texture->v0(), // v1
+            tl.x, tl.y, 0.0f, texture->u0(), texture->v1(), // v2
+            tr.x, tr.y, 0.0f, texture->u1(), texture->v1()  // v3
         };
 
 
@@ -50,8 +53,7 @@ namespace gt
         qtRenderer->indexBuf.bind();
 
 
-        // Set modelview-projection matrix
-        shader->_program.setUniformValue("mvp_matrix", qtRenderer->projection);
+        qtRenderer->projection2d(shader, "mvp_matrix");
 
         quintptr offset = 0;
 

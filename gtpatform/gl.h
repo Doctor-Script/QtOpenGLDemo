@@ -94,6 +94,15 @@ namespace gt
         WRAP_GL void AttachShader(GLuint program, GLuint shader) {
             QTGL(glAttachShader(program, shader));
         }
+
+
+        WRAP_GL GLint GetUniformLocation(GLuint program, const char* name) {
+            return QTGL(glGetUniformLocation(program, name));
+        }
+
+        WRAP_GL void UniformMatrix4fv(GLint location, GLsizei count, GLboolean transpose, const GLfloat* value) {
+            QTGL(glUniformMatrix4fv(location, count, transpose, value));
+        }
     };
 
 #undef WRAP_GL

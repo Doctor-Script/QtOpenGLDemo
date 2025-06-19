@@ -15,6 +15,10 @@ namespace gt
         QtShader(const char* vertex, const char* fragment);
 
         bool use() override;
+
+        GLuint program() override {
+            return _program.programId();
+        }
     };
 }
 
