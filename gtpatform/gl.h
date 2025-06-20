@@ -103,6 +103,38 @@ namespace gt
         WRAP_GL void UniformMatrix4fv(GLint location, GLsizei count, GLboolean transpose, const GLfloat* value) {
             QTGL(glUniformMatrix4fv(location, count, transpose, value));
         }
+
+        WRAP_GL GLint GetAttribLocation(GLuint program, const char* name) {
+            return QTGL(glGetAttribLocation(program, name));
+        }
+
+        WRAP_GL void VertexAttribPointer(GLuint indx, GLint size, GLenum type, GLboolean normalized, GLsizei stride, const void* ptr) {
+            QTGL(glVertexAttribPointer(indx, size, type, normalized, stride, ptr));
+        }
+
+
+        WRAP_GL void GenBuffers(GLsizei n, GLuint* buffers) {
+            QTGL(glGenBuffers(n, buffers));
+        }
+
+        WRAP_GL void BindBuffer(GLenum target, GLuint buffer) {
+            QTGL(glBindBuffer(target, buffer));
+        }
+
+        WRAP_GL void BufferData(GLenum target, GLsizeiptr size, const void* data, GLenum usage) {
+            QTGL(glBufferData(target, size, data, usage));
+        }
+
+        WRAP_GL void BufferSubData(GLenum target, GLintptr offset, GLsizeiptr size, const void* data) {
+            QTGL(glBufferSubData(target, offset, size, data));
+        }
+
+        WRAP_GL void DisableVertexAttribArray(GLuint index) {
+            QTGL(glDisableVertexAttribArray(index));
+        }
+        WRAP_GL void EnableVertexAttribArray(GLuint index) {
+            QTGL(glEnableVertexAttribArray(index));
+        }
     };
 
 #undef WRAP_GL

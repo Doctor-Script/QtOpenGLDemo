@@ -41,32 +41,65 @@ namespace gt
         };
 
 
-        auto ptrV = qtRenderer->arrayBuf.map(QOpenGLBuffer::WriteOnly);
-        memcpy(ptrV, vertices, 20 * sizeof(float));
-        qtRenderer->arrayBuf.unmap();
-        qtRenderer->arrayBuf.bind();
+//        auto ptrV = qtRenderer->arrayBuf.map(QOpenGLBuffer::WriteOnly);
+//        memcpy(ptrV, vertices, 20 * sizeof(float));
+//        qtRenderer->arrayBuf.unmap();
+//        qtRenderer->arrayBuf.bind();
 
         GLushort indices[] = { 0, 1, 2, 3, 2, 1 };
-        auto ptrI = qtRenderer->indexBuf.map(QOpenGLBuffer::WriteOnly);
-        memcpy(ptrI, indices, 6 * sizeof(GLushort));
-        qtRenderer->indexBuf.unmap();
-        qtRenderer->indexBuf.bind();
+        qtRenderer->bindVertices(vertices, 20 * sizeof(float));
+        qtRenderer->bindIndices(indices, 6 * sizeof(GLushort));
+
+
+//        auto ptrI = qtRenderer->indexBuf.map(QOpenGLBuffer::WriteOnly);
+//        memcpy(ptrI, indices, 6 * sizeof(GLushort));
+//        qtRenderer->indexBuf.unmap();
+//        qtRenderer->indexBuf.bind();
 
 
         qtRenderer->projection2d(shader, "mvp_matrix");
 
-        quintptr offset = 0;
 
-        int vertexLocation = shader->_program.attributeLocation("a_position");
-        shader->_program.enableAttributeArray(vertexLocation);
-        shader->_program.setAttributeBuffer(vertexLocation, GL_FLOAT, offset, 3, 5 * sizeof(float));
 
-        offset += sizeof(QVector3D);
 
-        int texcoordLocation = shader->_program.attributeLocation("a_texcoord");
-        shader->_program.enableAttributeArray(texcoordLocation);
-        shader->_program.setAttributeBuffer(texcoordLocation, GL_FLOAT, offset, 2, 5 * sizeof(float));
+        GLint positionAttribute = gl::GetAttribLocation(shader->program(), "a_position");
+        gl::VertexAttribPointer(positionAttribute,
+                   3, // elements
+                   GL_FLOAT, // of type float
+                   GL_FALSE, // don't normalize
+                   5 * sizeof(float), // stride is Vertex bytes
+                   (void*)0 // pull from the start of the vertex data
+        );
+        gl::EnableVertexAttribArray(positionAttribute);
 
-        qtRenderer->glDrawElements(GL_TRIANGLE_STRIP, 6, GL_UNSIGNED_SHORT, 0);
+//        quintptr offset = 0;
+//        int vertexLocation = shader->_program.attributeLocation("a_position");
+//        shader->_program.enableAttributeArray(vertexLocation);
+//        shader->_program.setAttributeBuffer(vertexLocation, GL_FLOAT, offset, 3, 5 * sizeof(float));
+//        offset += sizeof(QVector3D);
+//        int texcoordLocation = shader->_program.attributeLocation("a_texcoord");
+//        shader->_program.enableAttributeArray(texcoordLocation);
+//        shader->_program.setAttributeBuffer(texcoordLocation, GL_FLOAT, offset, 2, 5 * sizeof(float));
+
+
+
+        GLint uvAttribute = gl::GetAttribLocation(shader->program(), "a_texcoord");
+        gl::VertexAttribPointer(uvAttribute,
+                   2, // elements
+                   GL_FLOAT, // of type float
+                   GL_FALSE, // don't normalize
+                   5 * sizeof(float), // stride is Vertex bytes
+                   (void*)(3 * sizeof(float)) // pull from the start of the vertex data
+        );
+        gl::EnableVertexAttribArray(uvAttribute);
+
+
+
+//        qtRenderer->glDrawElements(GL_TRIANGLE_STRIP, 6, GL_UNSIGNED_SHORT, 0);
+        qtRenderer->glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, 0);
+
+
+        gl::DisableVertexAttribArray(uvAttribute);
+        gl::DisableVertexAttribArray(positionAttribute);
     }
 }
