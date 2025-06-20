@@ -10,18 +10,18 @@
 
 namespace gt
 {
-    class QtRender : public Render, public QOpenGLFunctions
+    class QtRender : public Render
     {
     public:
-        QOpenGLBuffer arrayBuf;
-        QOpenGLBuffer indexBuf;
+//        QOpenGLBuffer arrayBuf;
+//        QOpenGLBuffer indexBuf;
 
         QtSpriteRenderDelegate spriteRenderDelegate;
 
         QtRender();
         ~QtRender();
 
-        void init() override;
+//        void init() override;
 
         Shader* shader(const char* vertex, const char* fragment) override {
             return new QtShader(vertex, fragment);

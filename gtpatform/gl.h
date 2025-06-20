@@ -33,9 +33,21 @@ namespace gt
             NATIVEGL(glTexParameteri(target, pname, param));
         }
 
+        WRAP_GL void ClearColor(GLclampf red,GLclampf green,GLclampf blue,GLclampf alpha) {
+            NATIVEGL(glClearColor(red, green, blue, alpha));
+        }
+
         WRAP_GL void Clear(GLbitfield mask) {
             NATIVEGL(glClear(mask));
         }
+
+         WRAP_GL void Enable(GLenum cap) {
+            NATIVEGL(glEnable(cap));
+        }
+
+         WRAP_GL void DrawElements(GLenum mode,GLsizei count,GLenum type,const GLvoid *indices) {
+             NATIVEGL(glDrawElements(mode, count, type, indices));
+         }
 
         // TODO
         //PFNGLGENERATEMIPMAPPROC glGenerateMipmap = nullptr;
@@ -115,6 +127,10 @@ namespace gt
 
         WRAP_GL void GenBuffers(GLsizei n, GLuint* buffers) {
             QTGL(glGenBuffers(n, buffers));
+        }
+
+        WRAP_GL void DeleteBuffers(GLsizei n, const GLuint* buffers) {
+            QTGL(glDeleteBuffers(n, buffers));
         }
 
         WRAP_GL void BindBuffer(GLenum target, GLuint buffer) {

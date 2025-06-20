@@ -96,7 +96,7 @@ namespace gt
 
 
 //        qtRenderer->glDrawElements(GL_TRIANGLE_STRIP, 6, GL_UNSIGNED_SHORT, 0);
-        qtRenderer->glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, 0);
+        gl::DrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, 0);
 
 
         gl::DisableVertexAttribArray(uvAttribute);

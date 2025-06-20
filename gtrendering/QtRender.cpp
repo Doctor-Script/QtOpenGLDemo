@@ -3,18 +3,19 @@
 namespace gt
 {
     QtRender::QtRender() :
-        arrayBuf(QOpenGLBuffer::VertexBuffer),
-        indexBuf(QOpenGLBuffer::IndexBuffer),
+//        arrayBuf(QOpenGLBuffer::VertexBuffer),
+//        indexBuf(QOpenGLBuffer::IndexBuffer),
         spriteRenderDelegate(this)
     {
         delegates.sprite = &spriteRenderDelegate;
     }
 
     QtRender::~QtRender() {
-        arrayBuf.destroy();
-        indexBuf.destroy();
+//        arrayBuf.destroy();
+//        indexBuf.destroy();
     }
 
+    /*
     void QtRender::init()
     {
         Render::init();
@@ -22,18 +23,19 @@ namespace gt
         initializeOpenGLFunctions();
 
 
-        glClearColor(0, 0, 0, 1);
+//        glClearColor(0, 0, 0, 1);
 
 
-//        glEnable(GL_DEPTH_TEST);
-        glEnable(GL_CULL_FACE);
+//        //glEnable(GL_DEPTH_TEST);
+//        glEnable(GL_CULL_FACE);
 
-        arrayBuf.create();
-        arrayBuf.bind();
-        arrayBuf.allocate(20 * sizeof(float));
+//        arrayBuf.create();
+//        arrayBuf.bind();
+//        arrayBuf.allocate(20 * sizeof(float));
 
-        indexBuf.create();
-        indexBuf.bind();
-        indexBuf.allocate(6 * sizeof(GLushort));
+//        indexBuf.create();
+//        indexBuf.bind();
+//        indexBuf.allocate(6 * sizeof(GLushort));
     }
+    //*/
 }
