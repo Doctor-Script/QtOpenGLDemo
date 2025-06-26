@@ -7,15 +7,15 @@
 
 namespace gt
 {
-    class QtRender;
+//    class QtRender;
 
-    class QtSpriteRenderDelegate : public Render::Delegate
-    {
-    public:
-        QtRender* qtRenderer;
+//    class QtSpriteRenderDelegate : public Render::Delegate
+//    {
+//    public:
+//        QtRender* qtRenderer;
 
-        QtSpriteRenderDelegate(QtRender* qtRenderer);
+//        QtSpriteRenderDelegate(QtRender* qtRenderer);
 
-        void perform(Render::Item* renderable, Transform2D::Cache& cache) override;
-    };
+//        void perform(Render::Item* renderable, Transform2D::Cache& cache) override;
+//    };
 }

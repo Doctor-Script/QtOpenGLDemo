@@ -16,7 +16,7 @@ namespace gt
 //        QOpenGLBuffer arrayBuf;
 //        QOpenGLBuffer indexBuf;
 
-        QtSpriteRenderDelegate spriteRenderDelegate;
+//        QtSpriteRenderDelegate spriteRenderDelegate;
 
         QtRender();
         ~QtRender();
@@ -24,6 +24,7 @@ namespace gt
 //        void init() override;
 
         Shader* shader(const char* vertex, const char* fragment) override {
+            qDebug() << "shader";
             return new QtShader(vertex, fragment);
         }
     };

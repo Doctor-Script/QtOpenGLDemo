@@ -2,12 +2,12 @@
 
 namespace gt
 {
-    QtRender::QtRender() :
+    QtRender::QtRender()// :
 //        arrayBuf(QOpenGLBuffer::VertexBuffer),
 //        indexBuf(QOpenGLBuffer::IndexBuffer),
-        spriteRenderDelegate(this)
+//        spriteRenderDelegate(this)
     {
-        delegates.sprite = &spriteRenderDelegate;
+//        delegates.sprite = &spriteRenderDelegate;
     }
 
     QtRender::~QtRender() {

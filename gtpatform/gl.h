@@ -78,6 +78,10 @@ namespace gt
             QTGL(glDeleteProgram(program));
         }
 
+        WRAP_GL void UseProgram(GLuint program) {
+            QTGL(glUseProgram(program));
+        }
+
 
         WRAP_GL GLuint CreateShader(GLenum type) {
             return QTGL(glCreateShader(type));

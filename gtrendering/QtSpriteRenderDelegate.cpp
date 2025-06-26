@@ -6,6 +6,7 @@
 
 namespace gt
 {
+/*
     QtSpriteRenderDelegate::QtSpriteRenderDelegate(QtRender* qtRenderer) {
         this->qtRenderer = qtRenderer;
     }
@@ -101,5 +102,7 @@ namespace gt
 
         gl::DisableVertexAttribArray(uvAttribute);
         gl::DisableVertexAttribArray(positionAttribute);
+
     }
+    //*/
 }
