@@ -2,8 +2,8 @@
 
 #include <QOpenGLWidget>
 
-#include "Window.h"
-#include "rendering/Render.h"
+#include "gtpatform/gl.h"
+
 
 namespace gt
 {
@@ -16,8 +16,7 @@ namespace gt
     public:
         explicit GtWidget(void* arg, QWidget *parent = nullptr)
             : QOpenGLWidget(parent), _window(arg)
-        {
-        }
+        { }
 
         void initializeGL()
         {
