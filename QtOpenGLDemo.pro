@@ -13,17 +13,11 @@ CONFIG += c++11
 SOURCES += \
     main.cpp \
     GtWidget.cpp \
-    gtrendering/QtShader.cpp \
-    gtrendering/QtRender.cpp \
-    gtrendering/QtSpriteRenderDelegate.cpp \
     $$files(gtengine/*.cpp, true) \
     $$files(gtpatform/*.cpp, true)
 
 HEADERS += \
     GtWidget.h \
-    gtrendering/QtShader.h \
-    gtrendering/QtRender.h \
-    gtrendering/QtSpriteRenderDelegate.h \
     $$files(gtengine/*.h, true) \
     $$files(gtpatform/*.h, true)
 

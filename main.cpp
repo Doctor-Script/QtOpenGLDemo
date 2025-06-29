@@ -17,7 +17,7 @@ using namespace gt;
 class DemoWindow : public Window
 {
 public:
-    DemoWindow(void* arg, Render* render) : Window(arg, render) { }
+    DemoWindow(void* arg) : Window(arg) { }
 
     void start() override
     {
