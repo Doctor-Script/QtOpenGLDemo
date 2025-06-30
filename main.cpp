@@ -10,7 +10,7 @@
 //#include <stdio.h>
 //#include <QDebug>
 
-#include "gtengine.h"
+#include "gtengine/gtengine.h"
 using namespace gt;
 
 

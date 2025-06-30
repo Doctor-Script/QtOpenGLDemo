@@ -1,7 +1,7 @@
 #pragma once
 
-#include "resources/Resource.h"
-#include "resources/Texture.h"
+#include "gtengine/resources/Resource.h"
+#include "gtengine/resources/Texture.h"
 
 namespace gt
 {
