@@ -14,12 +14,12 @@ SOURCES += \
     main.cpp \
     GtWidget.cpp \
     $$files(gtengine/*.cpp, true) \
-    $$files(gtpatform/*.cpp, true)
+    $$files(gtplatform/*.cpp, true)
 
 HEADERS += \
     GtWidget.h \
     $$files(gtengine/*.h, true) \
-    $$files(gtpatform/*.h, true)
+    $$files(gtplatform/*.h, true)
 
 RESOURCES += \
     shaders.qrc \

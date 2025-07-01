@@ -1,18 +1,9 @@
-
-#include <QApplication>
-#include <QSurfaceFormat>
-
-#ifndef QT_NO_OPENGL
-#include "GtWidget.h"
-#endif
+#include "gtengine/gtengine.h"
+using namespace gt;
 
 //#include <iostream>
 //#include <stdio.h>
 //#include <QDebug>
-
-#include "gtengine/gtengine.h"
-using namespace gt;
-
 
 class DemoWindow : public Window
 {
@@ -44,25 +35,4 @@ public:
     }
 };
 
-int main(int argc, char *argv[])
-{
-    QApplication app(argc, argv);
-
-    QSurfaceFormat format;
-    format.setDepthBufferSize(24);
-    QSurfaceFormat::setDefaultFormat(format);
-
-    app.setApplicationName("GL Demo");
-    app.setApplicationVersion("0.1");
-
-
-
-#ifndef QT_NO_OPENGL
-    GtWidget<DemoWindow> widget(nullptr);
-    widget.show();
-#else
-    QLabel note("OpenGL Support required");
-    note.show();
-#endif
-    return app.exec();
-}
+GT_RUN(DemoWindow);

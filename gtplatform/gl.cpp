@@ -1,4 +1,4 @@
-#include "gtpatform/gl.h"
+#include "gtplatform/gl.h"
 
 namespace gt
 {
