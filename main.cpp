@@ -14,22 +14,22 @@ public:
     {
         Window::start();
 
-//        auto tex = resources().texture(":/cube.png");
+        auto cube = resources().get<Texture>("cube.png");
 
-        auto tex = resources().get<Texture>("folder/flower.jpg");
-        printf("%d\n", tex.use_count());
+        auto flower = resources().get<Texture>("folder/flower.jpg");
+        printf("%d\n", flower.use_count());
 
-        auto tex2 = resources().get<Texture>("folder/flower.jpg");
-        printf("%d\n", tex.use_count());
+        auto flower2 = resources().get<Texture>("folder/flower.jpg");
+        printf("%d\n", flower2.use_count());
 
         auto s = canvas()->child<Sprite>();
-        s->setTexture(tex);
+        s->setTexture(flower);
         s->transform.setX(100);
         s->transform.setY(100);
         s->transform.setAngle(45);
 
         auto s1 = s->child<Sprite>();
-        s1->setTexture(tex2);
+        s1->setTexture(cube);
         s1->transform.setY(100);
         s1->transform.setAngle(45);
     }

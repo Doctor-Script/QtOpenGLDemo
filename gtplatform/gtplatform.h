@@ -5,7 +5,7 @@
 #include <QSurfaceFormat>
 
 //#ifndef QT_NO_OPENGL
-#include "GtWidget.h"
+#include "gtplatform/GtWidget.h"
 //#endif
 
 #define GT_RUN(window) int main(int c, char *a[]) { return run<window>(c, a, "GT"); }

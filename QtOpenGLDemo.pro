@@ -12,12 +12,10 @@ CONFIG += c++11
 
 SOURCES += \
     main.cpp \
-    GtWidget.cpp \
     $$files(gtengine/*.cpp, true) \
     $$files(gtplatform/*.cpp, true)
 
 HEADERS += \
-    GtWidget.h \
     $$files(gtengine/*.h, true) \
     $$files(gtplatform/*.h, true)
 
