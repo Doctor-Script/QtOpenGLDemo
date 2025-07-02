@@ -1,14 +1,11 @@
 #include "gtengine/gtengine.h"
 using namespace gt;
 
-//#include <iostream>
-//#include <stdio.h>
-//#include <QDebug>
 
 class DemoWindow : public Window
 {
 public:
-    DemoWindow(void* arg) : Window(arg) { }
+    DemoWindow(void* arg) : Window(arg) { }//TODO remove arg
 
     void start() override
     {
@@ -17,10 +14,10 @@ public:
         auto cube = resources().get<Texture>("cube.png");
 
         auto flower = resources().get<Texture>("folder/flower.jpg");
-        printf("%d\n", flower.use_count());
+        Log::trace("%d", flower.use_count());
 
         auto flower2 = resources().get<Texture>("folder/flower.jpg");
-        printf("%d\n", flower2.use_count());
+        Log::trace("%d", flower2.use_count());
 
         auto s = canvas()->child<Sprite>();
         s->setTexture(flower);

@@ -7,6 +7,9 @@
 
 namespace gt
 {
+    // TODO Get rid of template
+    // TODO window.start() must be called after window has correct size
+
     template<typename TWindow> class GtWidget : public QOpenGLWidget
     {
 //        Q_OBJECT
