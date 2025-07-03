@@ -4,7 +4,7 @@
 
 namespace gt
 {
-    void Log::write(const char* prefix, const char* format, va_list argptr)
+    void Log::write(Level, const char* prefix, const char* format, va_list argptr)
     {
         printf(prefix);
         vprintf(format, argptr);
