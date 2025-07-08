@@ -5,10 +5,12 @@
 
 namespace gt
 {
+    class Platform;
+
     class ResourceLoader
     {
     public:
-        ResourceLoader();
+        ResourceLoader(Platform&);
 
         void load(Resource::Name name, gref<Texture>& result);
     };

@@ -4,6 +4,8 @@
 
 #include "gtplatform/gl.h"
 
+#include "gtplatform/Platform.h"
+
 
 namespace gt
 {
@@ -15,10 +17,11 @@ namespace gt
 //        Q_OBJECT
 
         TWindow _window;
+        Platform _platform;
 
     public:
-        explicit GtWidget(void* arg, QWidget *parent = nullptr)
-            : QOpenGLWidget(parent), _window(arg)
+        explicit GtWidget(QWidget *parent = nullptr)
+            : QOpenGLWidget(parent), _window(_platform), _platform(_window)
         { }
 
         void initializeGL()
