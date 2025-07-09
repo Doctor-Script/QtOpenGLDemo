@@ -4,7 +4,7 @@
 
 namespace gt
 {
-    ResourceLoader::ResourceLoader() = default;
+    ResourceLoader::ResourceLoader(Platform&) { }
 
     void ResourceLoader::load(Resource::Name name, gref<Texture>& result)
     {

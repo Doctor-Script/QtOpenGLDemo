@@ -2,14 +2,14 @@
 using namespace gt;
 
 
-class DemoWindow : public Window
+class DemoController : public Controller
 {
 public:
-    explicit DemoWindow(Platform& platform) : Window(platform) { }
+    explicit DemoController(Platform& platform) : Controller(platform) { }
 
     void start() override
     {
-        Window::start();
+        Controller::start();
 
         auto cube = resources().get<Texture>("cube.png");
 
@@ -32,4 +32,4 @@ public:
     }
 };
 
-GT_RUN(DemoWindow);
+GT_RUN(DemoController);

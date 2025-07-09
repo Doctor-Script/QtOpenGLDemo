@@ -8,11 +8,11 @@
 #include "gtplatform/GtWidget.h"
 //#endif
 
-#define GT_RUN(window) int main(int c, char *a[]) { return run<window>(c, a, "GT"); }
+#define GT_RUN(controller) int main(int c, char *a[]) { return run<controller>(c, a, "GT"); }
 
 namespace gt
 {
-    template<typename TWindow> inline int run(int argc, char *argv[], const char* name)
+    template<typename TController> inline int run(int argc, char *argv[], const char* name)
     {
         QApplication app(argc, argv);
 
@@ -24,7 +24,7 @@ namespace gt
         //app.setApplicationVersion("0.1");
 
     #ifndef QT_NO_OPENGL
-        GtWidget<TWindow> widget(nullptr);
+        GtWidget<TController> widget(nullptr);
         widget.show();
     #else
         QLabel note("OpenGL Support required");

@@ -4,12 +4,12 @@
 
 namespace gt
 {
-    class Window;
+    class Controller;
 
     class Platform
     {
     public:
-        Platform(Window&);
+        Platform(Controller&);
     };
 }
 

@@ -10,33 +10,33 @@
 namespace gt
 {
     // TODO Get rid of template
-    // TODO window.start() must be called after window has correct size
+    // TODO _controller.start() must be called after window has correct size
 
-    template<typename TWindow> class GtWidget : public QOpenGLWidget
+    template<typename TController> class GtWidget : public QOpenGLWidget
     {
 //        Q_OBJECT
 
-        TWindow _window;
+        TController _controller;
         Platform _platform;
 
     public:
         explicit GtWidget(QWidget *parent = nullptr)
-            : QOpenGLWidget(parent), _window(_platform), _platform(_window)
+            : QOpenGLWidget(parent), _controller(_platform), _platform(_controller)
         { }
 
         void initializeGL()
         {
             gl::_functions = QOpenGLContext::currentContext()->functions();
-            _window.init();
-            _window.start();
+            _controller.init();
+            _controller.start();
         }
 
         void resizeGL(int width, int height) {
-            _window.resize(width, height);
+            _controller.resize(width, height);
         }
 
         void paintGL() {
-            _window.draw();
+            _controller.draw();
         }
     };
 }

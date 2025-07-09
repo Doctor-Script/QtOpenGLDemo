@@ -2,7 +2,7 @@
 
 namespace gt
 {
-    Platform::Platform(Window&)
+    Platform::Platform(Controller&)
     {
 
     }
