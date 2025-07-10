@@ -1,6 +1,8 @@
 #pragma once
 
 #include <QOpenGLWidget>
+#include <QBasicTimer>
+#include <QElapsedTimer>
 
 
 namespace gt
@@ -10,7 +12,9 @@ namespace gt
     class Platform
     {
         Controller& _controller;
-        bool _started = false;
+        QElapsedTimer _counter;
+        bool _started;
+
 
     public:
         explicit Platform(Controller& controller);
@@ -20,6 +24,8 @@ namespace gt
         void resizeGL(int width, int height);
 
         void paintGL();
+
+        void timerTick();
     };
 
     template<typename TController> class GtWidget : public QOpenGLWidget
@@ -28,11 +34,14 @@ namespace gt
 
         TController _controller;
         Platform _platform;
+        QBasicTimer _timer;
 
     public:
         explicit GtWidget(QWidget *parent = nullptr)
             : QOpenGLWidget(parent), _controller(_platform), _platform(_controller)
-        { }
+        {
+            _timer.start(1000 / 60, this);
+        }
 
         void initializeGL() override {
             _platform.initializeGL();
@@ -44,6 +53,12 @@ namespace gt
 
         void paintGL() override {
             _platform.paintGL();
+        }
+
+        void timerEvent(QTimerEvent*) override
+        {
+            _platform.timerTick();
+            update();
         }
     };
 }

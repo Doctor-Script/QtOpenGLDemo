@@ -48,6 +48,16 @@ public:
         s->transform.setWidth(size - 40.f);
         s->transform.setHeight(size - 40.f);
     }
+
+    void tick(Time& time) override
+    {
+
+        // TODO get rid of parent call
+        Controller::tick(time);
+
+
+        s->transform.setAngle(s->transform.angle() + 10 * time.deltaS());
+    }
 };
 
 GT_RUN(DemoController);
