@@ -1,5 +1,4 @@
-#ifndef PLATFORM_H
-#define PLATFORM_H
+#pragma once
 
 
 namespace gt
@@ -8,9 +7,16 @@ namespace gt
 
     class Platform
     {
+        Controller& _controller;
+        bool _started = false;
+
     public:
-        Platform(Controller&);
+        explicit Platform(Controller& controller);
+
+        void initializeGL();
+
+        void resizeGL(int width, int height);
+
+        void paintGL();
     };
 }
-
-#endif // PLATFORM_H

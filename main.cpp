@@ -4,6 +4,7 @@ using namespace gt;
 
 class DemoController : public Controller
 {
+    gref<Sprite> s;
 public:
     explicit DemoController(Platform& platform) : Controller(platform) { }
 
@@ -19,16 +20,34 @@ public:
         auto flower2 = resources().get<Texture>("folder/flower.jpg");
         GT_LOG("%d", flower2.use_count());
 
-        auto s = canvas()->child<Sprite>();
-        s->setTexture(flower);
-        s->transform.setX(100);
-        s->transform.setY(100);
-        s->transform.setAngle(45);
+        auto circle = resources().get<Texture>("compass-circle.png");
 
-        auto s1 = s->child<Sprite>();
-        s1->setTexture(cube);
-        s1->transform.setY(100);
-        s1->transform.setAngle(45);
+        s = canvas()->child<Sprite>();
+        s->setTexture(circle);
+
+
+
+//        s->transform.setX(100);
+//        s->transform.setY(100);
+//        s->transform.setAngle(45);
+
+//        auto s1 = s->child<Sprite>();
+//        s1->setTexture(cube);
+//        s1->transform.setY(100);
+//        s1->transform.setAngle(45);
+    }
+
+    void resized() override
+    {
+        float width = screen().width();
+        float height = screen().height();
+        float size = width < height ? width : height;
+
+        s->transform.setX(width / 2.f);
+        s->transform.setY(height / 2.f);
+
+        s->transform.setWidth(size - 40.f);
+        s->transform.setHeight(size - 40.f);
     }
 };
 

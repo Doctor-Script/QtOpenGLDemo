@@ -9,9 +9,6 @@
 
 namespace gt
 {
-    // TODO Get rid of template
-    // TODO _controller.start() must be called after window has correct size
-
     template<typename TController> class GtWidget : public QOpenGLWidget
     {
 //        Q_OBJECT
@@ -24,19 +21,16 @@ namespace gt
             : QOpenGLWidget(parent), _controller(_platform), _platform(_controller)
         { }
 
-        void initializeGL()
-        {
-            gl::_functions = QOpenGLContext::currentContext()->functions();
-            _controller.init();
-            _controller.start();
+        void initializeGL() override {
+            _platform.initializeGL();
         }
 
-        void resizeGL(int width, int height) {
-            _controller.resize(width, height);
+        void resizeGL(int width, int height) override {
+            _platform.resizeGL(width, height);
         }
 
-        void paintGL() {
-            _controller.draw();
+        void paintGL() override {
+            _platform.paintGL();
         }
     };
 }
