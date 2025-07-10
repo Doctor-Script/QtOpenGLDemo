@@ -2,11 +2,21 @@
 
 #include "gtplatform/gl.h"
 #include "gtengine/Controller.h"
+#include "gtengine/utils/Log.h"
+
+#include <QSurfaceFormat>
 
 
 namespace gt
 {
-    Platform::Platform(Controller& controller) : _controller(controller) { }
+    Platform::Platform(Controller& controller) : _controller(controller)
+    {
+        GT_LOG_INFO("Launch Platform");
+
+        QSurfaceFormat format;
+        format.setDepthBufferSize(24);
+        QSurfaceFormat::setDefaultFormat(format);
+    }
 
     void Platform::initializeGL()
     {

@@ -12,13 +12,12 @@ public:
     {
         Controller::start();
 
-        auto cube = resources().get<Texture>("cube.png");
+        //auto cube = resources().get<Texture>("cube.png");
+        //auto flower = resources().get<Texture>("folder/flower.jpg");
+        //GT_LOG("%d", flower.use_count());
 
-        auto flower = resources().get<Texture>("folder/flower.jpg");
-        GT_LOG("%d", flower.use_count());
-
-        auto flower2 = resources().get<Texture>("folder/flower.jpg");
-        GT_LOG("%d", flower2.use_count());
+        //auto flower2 = resources().get<Texture>("folder/flower.jpg");
+        //GT_LOG("%d", flower2.use_count());
 
         auto circle = resources().get<Texture>("compass-circle.png");
 
