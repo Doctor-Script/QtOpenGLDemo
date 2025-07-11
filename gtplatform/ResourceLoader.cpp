@@ -1,6 +1,7 @@
 #include "ResourceLoader.h"
 
 #include "gtengine/utils/types.h"
+#include "gtengine/utils/Log.h"
 
 #include <QImage>
 
@@ -17,13 +18,13 @@ namespace gt
         std::string prefix(":/resources/");
         std::string fullPath = prefix.append(name);
 
-        // TODO Fail if no file found
-
         auto img = QImage(fullPath.c_str());
-        result = std::make_shared<Texture>(name, img.constBits(), img.width(), img.height());
+        const uchar* data = img.constBits();
+        if (!data) {
+            FAIL_OP("Texture %s not found", name);
+        }
 
-
-
+        result = std::make_shared<Texture>(name, data, img.width(), img.height());
         return OpResult::OK;
     }
 }
