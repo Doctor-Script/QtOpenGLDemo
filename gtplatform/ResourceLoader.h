@@ -12,6 +12,6 @@ namespace gt
     public:
         ResourceLoader(Platform&);
 
-        void load(Resource::Name name, gref<Texture>& result);
+        OpResult load(Resource::Name name, gref<Texture>& result);
     };
 }

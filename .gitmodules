@@ -1,0 +1,3 @@
+[submodule "gtengine"]
+	path = gtengine
+	url = git@github.com:Doctor-Script/gtengine.git

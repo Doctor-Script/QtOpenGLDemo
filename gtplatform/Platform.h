@@ -12,20 +12,17 @@ namespace gt
     class Platform
     {
         Controller& _controller;
-        QElapsedTimer _counter;
-        bool _started;
-
 
     public:
         explicit Platform(Controller& controller);
 
-        void initializeGL();
+        void init();
 
-        void resizeGL(int width, int height);
+        void resize(int width, int height);
 
-        void paintGL();
+        int draw();
 
-        void timerTick();
+        void tick();
     };
 
     template<typename TController> class GtWidget : public QOpenGLWidget
@@ -34,30 +31,28 @@ namespace gt
 
         TController _controller;
         Platform _platform;
-        QBasicTimer _timer;
+        int _timer;
 
     public:
         explicit GtWidget(QWidget *parent = nullptr)
             : QOpenGLWidget(parent), _controller(_platform), _platform(_controller)
-        {
-            _timer.start(1000 / 60, this);
-        }
+        { }
 
         void initializeGL() override {
-            _platform.initializeGL();
+            _platform.init();
         }
 
         void resizeGL(int width, int height) override {
-            _platform.resizeGL(width, height);
+            _platform.resize(width, height);
         }
 
         void paintGL() override {
-            _platform.paintGL();
+            _timer = startTimer(_platform.draw());
         }
 
         void timerEvent(QTimerEvent*) override
         {
-            _platform.timerTick();
+            _platform.tick();
             update();
         }
     };

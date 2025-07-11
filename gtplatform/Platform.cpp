@@ -9,38 +9,41 @@
 
 namespace gt
 {
-    Platform::Platform(Controller& controller) : _controller(controller), _started(false)
+    Platform::Platform(Controller& controller) : _controller(controller)
     {
         GT_LOG_INFO("Launch Platform");
 
         QSurfaceFormat format;
         format.setDepthBufferSize(24);
         QSurfaceFormat::setDefaultFormat(format);
-
-        _counter.start();
     }
 
-    void Platform::initializeGL()
+    void Platform::init()
     {
         gl::_functions = QOpenGLContext::currentContext()->functions();
+
         _controller.init();
         _controller.start();
+
+        _controller._time.start();
     }
 
-    void Platform::resizeGL(int width, int height)
+    void Platform::resize(int width, int height)
     {
         _controller.resize(width, height);
         _controller.resized();
     }
 
-    void Platform::paintGL() {
+    int Platform::draw()
+    {
         _controller.draw();
+        return _controller._time.calculateWaitTime();
     }
 
-    void Platform::timerTick()
+    void Platform::tick()
     {
-        _controller._time.update(_counter.elapsed());
-        _counter.restart();
-        _controller.tick(_controller._time);
+        _controller._time.frameEnd();
+        _controller._time.frameBegin();
+        _controller.tick();
     }
 }

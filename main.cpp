@@ -49,14 +49,10 @@ public:
         s->transform.setHeight(size - 40.f);
     }
 
-    void tick(Time& time) override
+    void tick() override
     {
-
-        // TODO get rid of parent call
-        Controller::tick(time);
-
-
-        s->transform.setAngle(s->transform.angle() + 10 * time.deltaS());
+        s->transform.setAngle(s->transform.angle() + 10 * time().delta());
+        tickChildren();
     }
 };
 
