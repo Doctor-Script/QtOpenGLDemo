@@ -42,8 +42,12 @@ namespace gt
 
     void Platform::tick()
     {
-        _controller._time.frameEnd();
-        _controller._time.frameBegin();
+        Time& time = _controller._time;
+        time.frameEnd();
+        time.frameBegin();
+
+        // TODO Input
+
         _controller.tick();
     }
 }
