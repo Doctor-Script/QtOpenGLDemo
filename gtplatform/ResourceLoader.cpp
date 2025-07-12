@@ -2,6 +2,7 @@
 
 #include "gtengine/utils/types.h"
 #include "gtengine/utils/Log.h"
+//#include "gtengine/utils/Color.h"
 
 #include <QImage>
 
@@ -12,8 +13,8 @@ namespace gt
 
     OpResult ResourceLoader::load(Resource::Name name, gref<Texture>& result)
     {
-//        GLubyte pixel[4] = { 255, 0, 0, 255 };
-//        result = std::make_shared<Texture>(name, pixel, 1, 1);
+        // For debug
+        //result = std::make_shared<Texture>(name, Color::green().toRGBA(), 1, 1, GL_RGBA); return OpResult::OK;
 
         std::string prefix(":/resources/");
         std::string fullPath = prefix.append(name);
