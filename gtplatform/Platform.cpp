@@ -37,7 +37,8 @@ namespace gt
     int Platform::draw()
     {
         _controller.draw();
-        return _controller._time.calculateWaitTime();
+        int waitTime = _controller._time.calculateWaitTime();
+        return waitTime >= 0 ? waitTime : 0;
     }
 
     void Platform::tick()
