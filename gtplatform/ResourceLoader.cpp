@@ -24,7 +24,7 @@ namespace gt
             FAIL_OP("Texture %s not found", name);
         }
 
-        result = std::make_shared<Texture>(name, data, img.width(), img.height());
+        result = std::make_shared<Texture>(name, data, img.width(), img.height(), GL_BGRA);
         return OpResult::OK;
     }
 }
