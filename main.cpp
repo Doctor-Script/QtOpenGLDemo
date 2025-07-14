@@ -36,7 +36,7 @@ public:
 //        s1->transform.setAngle(45);
     }
 
-    void resized() override
+    void layout() override
     {
         float width = screen().width();
         float height = screen().height();

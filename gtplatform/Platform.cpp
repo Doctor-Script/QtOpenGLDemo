@@ -31,7 +31,7 @@ namespace gt
     void Platform::resize(int width, int height)
     {
         _controller.resize(width, height);
-        _controller.resized();
+        _controller.layout();
     }
 
     int Platform::draw()
