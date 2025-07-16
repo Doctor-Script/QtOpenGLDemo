@@ -3,5 +3,6 @@
         <file>resources/cube.png</file>
         <file>resources/compass-circle.png</file>
         <file>resources/folder/flower.jpg</file>
+        <file>resources/arrow-mark.png</file>
     </qresource>
 </RCC>

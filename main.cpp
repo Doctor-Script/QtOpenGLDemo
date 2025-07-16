@@ -5,9 +5,10 @@ using namespace gt;
 class Compass : public Node2D
 {
     gref<Sprite> _bg;
+    gref<Sprite> _target;
     gref<Sprite> _overlay;
 public:
-    explicit Compass(w_ref<Node> parent) : Node2D(parent)
+    explicit Compass(Node::Initalizer initalizer) : Node2D(initalizer)
     {
         // TODO Can I create childer here?
     }
@@ -17,7 +18,9 @@ public:
         auto circle = resources().get<Texture>("compass-circle.png");
         _bg = child<Sprite>(circle);
 
-        _overlay = child<Sprite>("cube.png");
+        _target = _bg->child<Sprite>("arrow-mark.png");
+
+        _overlay = child<Sprite>("arrow-mark.png");
     }
 
     void layout() override
@@ -26,16 +29,26 @@ public:
 
         float width = canvas->width();
         float height = canvas->height();
-        float size = width < height ? width : height;
+        float size = width < height ? width : height - 40.f;
+
 
         transform.setX(width / 2.f);
         transform.setY(height / 2.f);
 
-        transform.setWidth(size - 40.f);
-        transform.setHeight(size - 40.f);
+        transform.setWidth(size);
+        transform.setHeight(size);
 
         _bg->transform.setWidth(transform.width());
         _bg->transform.setHeight(transform.height());
+
+        _target->transform.setWidth(0.2f * size);
+        _target->transform.setHeight(0.1f * size);
+        _target->transform.setX(size * 0.5f);
+        _target->transform.setAngle(180.0f);
+
+        _overlay->transform.setWidth(0.3f * size);
+        _overlay->transform.setHeight(0.3f * size);
+        _overlay->transform.setAngle(90.0f);
     }
 
     void tick() override
@@ -52,38 +65,15 @@ class DemoController : public Controller
 {
     gref<Compass> _compass;
 public:
-    explicit DemoController(Platform& platform) : Controller(platform) { }
+    explicit DemoController(Platform& platform) : Controller(platform)
+    {
+//        _compass = canvas()->child<Compass>();
+    }
 
     void start() override
     {
         Controller::start();
-
-//        setBackground(Color::green());
-
-        //auto cube = resources().get<Texture>("cube.png");
-        //auto flower = resources().get<Texture>("folder/flower.jpg");
-        //GT_LOG("%d", flower.use_count());
-
-        //auto flower2 = resources().get<Texture>("folder/flower.jpg");
-        //GT_LOG("%d", flower2.use_count());
-
-        auto circle = resources().get<Texture>("compass-circle.png");
-
-//        s = canvas()->child<Sprite>(circle);
-//        s->setTexture(circle);
-
         _compass = canvas()->child<Compass>();
-
-
-
-//        s->transform.setX(100);
-//        s->transform.setY(100);
-//        s->transform.setAngle(45);
-
-//        auto s1 = s->child<Sprite>();
-//        s1->setTexture(cube);
-//        s1->transform.setY(100);
-//        s1->transform.setAngle(45);
     }
 
     void layout() override
