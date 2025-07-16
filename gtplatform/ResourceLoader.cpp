@@ -10,19 +10,17 @@ namespace gt
 {
     ResourceLoader::ResourceLoader(Platform&) { }
 
-    OpResult ResourceLoader::load(Resource::Name name, gref<Texture>& result)
+    OpResult ResourceLoader::load(Resource::Name name, gref<Texture>& texture)
     {
         std::string prefix(":/resources/");
         std::string fullPath = prefix.append(name);
 
         auto img = QImage(fullPath.c_str());
         const uchar* data = img.constBits();
-        if (!data && !result->fallback())
-        {
-            Log::error("Texture '%s' not found", name);
-            return OpResult::FAIL;
+        if (!data && !texture->fallback()) {
+            FAIL_OP("Texture '%s' not found", name);
         }
 
-        return result->fill(data, img.width(), img.height(), GL_BGRA);
+        return texture->fill(data, img.width(), img.height(), GL_BGRA);
     }
 }
