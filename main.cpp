@@ -4,22 +4,27 @@ using namespace gt;
 
 class Compass : public Node2D
 {
-    gref<Sprite> _bg;
-    gref<Sprite> _target;
-    gref<Sprite> _overlay;
-public:
-    explicit Compass(Node::Initalizer initalizer) : Node2D(initalizer)
-    {
-        // TODO Can I create childer here?
-    }
+    const sref<Sprite> _bg;
+    sref<Sprite> _target;
+    sref<Sprite> _overlay;
 
-    void start() override
+public:
+    explicit Compass(Node::Initalizer initalizer) : Node2D(initalizer), _bg(child<Sprite>("compass-circle.png"))
     {
-        _bg = child<Sprite>("compass-circle.png");
+//        _bg = child<Sprite>("compass-circle.png");
 
         auto arrow = resources().get<Texture>("arrow-mark.png");
         _target = _bg->child<Sprite>(arrow);
         _overlay = child<Sprite>(arrow);
+    }
+
+    void start() override
+    {
+//        _bg = child<Sprite>("compass-circle.png");
+
+//        auto arrow = resources().get<Texture>("arrow-mark.png");
+//        _target = _bg->child<Sprite>(arrow);
+//        _overlay = child<Sprite>(arrow);
     }
 
     void layout() override
@@ -48,16 +53,16 @@ public:
 
 class DemoController : public Controller
 {
-    gref<Compass> _compass;
+    sref<Compass> _compass;
 public:
     explicit DemoController(Platform& platform) : Controller(platform)
     {
-//        _compass = canvas()->child<Compass>();
+        _compass = canvas()->child<Compass>();
     }
 
     void start() override
     {
-        _compass = canvas()->child<Compass>();
+//        _compass = canvas()->child<Compass>();
     }
 
     void layout() override
