@@ -50,5 +50,6 @@ namespace gt
         // TODO Input
 
         _controller.tick();
+        _controller.tickChildren();
     }
 }
