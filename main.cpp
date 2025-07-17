@@ -15,7 +15,7 @@ public:
 
         auto arrow = resources().get<Texture>("arrow-mark.png");
         _target = _bg->child<Sprite>(arrow);
-        _overlay = child<Sprite>(arrow);
+        _overlay = child<Sprite>(arrow, Color::f(1.0f, 0.5f, 0.0f, 1.0f));
     }
 
     void start() override

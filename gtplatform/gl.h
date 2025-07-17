@@ -45,7 +45,11 @@ namespace gt
             NATIVE(glEnable(cap));
         }
 
-         WRAP void DrawElements(GLenum mode,GLsizei count,GLenum type,const GLvoid *indices) {
+         WRAP void BlendFunc(GLenum sfactor, GLenum dfactor) {
+            NATIVE(glBlendFunc(sfactor, dfactor));
+         }
+
+         WRAP void DrawElements(GLenum mode, GLsizei count, GLenum type, const GLvoid *indices) {
              NATIVE(glDrawElements(mode, count, type, indices));
          }
 
@@ -118,6 +122,10 @@ namespace gt
 
         WRAP void UniformMatrix4fv(GLint location, GLsizei count, GLboolean transpose, const GLfloat* value) {
             PLATFORM(glUniformMatrix4fv(location, count, transpose, value));
+        }
+
+        WRAP void Uniform4f(GLint location, GLfloat x, GLfloat y, GLfloat z, GLfloat w) {
+            PLATFORM(glUniform4f(location, x, y, z, w));
         }
 
         WRAP GLint GetAttribLocation(GLuint program, const char* name) {
