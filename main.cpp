@@ -1,68 +1,86 @@
-
-#include <QApplication>
-#include <QSurfaceFormat>
-
-#ifndef QT_NO_OPENGL
-#include "GtWidget.h"
-#endif
-
-//#include <iostream>
-//#include <stdio.h>
-//#include <QDebug>
-
-#include "gtengine.h"
+#include "gtengine/gtengine.h"
 using namespace gt;
 
 
-class DemoWindow : public Window
+class Compass : public Node2D
 {
+    const sref<Sprite> _bg;
+    sref<Sprite> _target;
+    sref<Sprite> _overlay;
+
 public:
-    DemoWindow(void* arg) : Window(arg) { }
+    explicit Compass(Node::Initalizer initalizer) : Node2D(initalizer), _bg(child<Sprite>("compass-circle.png"))
+    {
+//        _bg = child<Sprite>("compass-circle.png");
+
+        auto arrow = resources().get<Texture>("arrow-mark.png");
+        _target = _bg->child<Sprite>(arrow);
+        _overlay = child<Sprite>(arrow, Color::f(1.0f, 0.5f, 0.0f, 1.0f));
+    }
 
     void start() override
     {
-        Window::start();
+//        _bg = child<Sprite>("compass-circle.png");
 
-//        auto tex = resources().texture(":/cube.png");
+//        auto arrow = resources().get<Texture>("arrow-mark.png");
+//        _target = _bg->child<Sprite>(arrow);
+//        _overlay = child<Sprite>(arrow);
+    }
 
-        auto tex = resources().get<Texture>("folder/flower.jpg");
-        printf("%d\n", tex.use_count());
+    void layout() override
+    {
+        float size = transform.width();
 
-        auto tex2 = resources().get<Texture>("folder/flower.jpg");
-        printf("%d\n", tex.use_count());
+        _bg->transform.setWidth(transform.width());
+        _bg->transform.setHeight(transform.height());
 
-        auto s = canvas()->child<Sprite>();
-        s->setTexture(tex);
-        s->transform.setX(100);
-        s->transform.setY(100);
-        s->transform.setAngle(45);
+        _target->transform.setWidth(0.2f * size);
+        _target->transform.setHeight(0.1f * size);
+        _target->transform.setX(size * 0.5f);
+        _target->transform.setAngle(180.0f);
 
-        auto s1 = s->child<Sprite>();
-        s1->setTexture(tex2);
-        s1->transform.setY(100);
-        s1->transform.setAngle(45);
+        _overlay->transform.setWidth(0.3f * size);
+        _overlay->transform.setHeight(0.3f * size);
+        _overlay->transform.setAngle(90.0f);
+    }
+
+    void tick() override
+    {
+        _bg->transform.setAngle(_bg->transform.angle() + 10 * time().delta());
     }
 };
 
-int main(int argc, char *argv[])
+
+class DemoController : public Controller
 {
-    QApplication app(argc, argv);
+    sref<Compass> _compass;
+public:
+    explicit DemoController(Platform& platform) : Controller(platform)
+    {
+        _compass = canvas()->child<Compass>();
+    }
 
-    QSurfaceFormat format;
-    format.setDepthBufferSize(24);
-    QSurfaceFormat::setDefaultFormat(format);
+    void start() override
+    {
+//        _compass = canvas()->child<Compass>();
+    }
 
-    app.setApplicationName("GL Demo");
-    app.setApplicationVersion("0.1");
+    void layout() override
+    {
+        float width = screen().width();
+        float height = screen().height();
+        float size = width < height ? width : height - 40.f;
 
+        _compass->transform.setWidth(size);
+        _compass->transform.setHeight(size);
 
+        _compass->transform.setX(width / 2.f);
+        _compass->transform.setY(height / 2.f);
+    }
 
-#ifndef QT_NO_OPENGL
-    GtWidget<DemoWindow> widget(nullptr);
-    widget.show();
-#else
-    QLabel note("OpenGL Support required");
-    note.show();
-#endif
-    return app.exec();
-}
+    void tick() override
+    {
+    }
+};
+
+GT_RUN(DemoController);

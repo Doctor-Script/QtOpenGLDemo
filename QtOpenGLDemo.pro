@@ -12,20 +12,16 @@ CONFIG += c++11
 
 SOURCES += \
     main.cpp \
-    GtWidget.cpp \
     $$files(gtengine/*.cpp, true) \
-    $$files(gtpatform/*.cpp, true)
+    $$files(gtplatform/*.cpp, true)
 
 HEADERS += \
-    GtWidget.h \
     $$files(gtengine/*.h, true) \
-    $$files(gtpatform/*.h, true)
+    $$files(gtplatform/*.h, true)
 
 RESOURCES += \
     shaders.qrc \
     textures.qrc
-
-INCLUDEPATH += gtengine
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
