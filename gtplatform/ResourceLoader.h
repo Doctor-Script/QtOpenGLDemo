@@ -12,12 +12,12 @@ namespace gt
     public:
         ResourceLoader(Platform&);
 
-        template <typename T> OpResult late(sref<Resource> resource)
+        template <typename T> OpResult late(gref<Resource> resource)
         {
-            sref<T> specific = s_cast<T>(resource);
+            gref<T> specific = s_cast<T>(resource);
             return load(specific->name(), specific);
         }
 
-        OpResult load(Resource::Name name, sref<Texture>& result);
+        OpResult load(Resource::Name name, gref<Texture>& result);
     };
 }

@@ -1,12 +1,16 @@
+//#define DEBUG_REF_ENABLE
+
 #include "gtengine/gtengine.h"
 using namespace gt;
 
 
+//int gt::totalCount = 0;
+
 class Compass : public Node2D
 {
-    const sref<Sprite> _bg;
-    sref<Sprite> _target;
-    sref<Sprite> _overlay;
+    const gref<Sprite> _bg;
+    gref<Sprite> _target;
+    gref<Sprite> _overlay;
 
 public:
     explicit Compass(Node::Initalizer initalizer) : Node2D(initalizer), _bg(child<Sprite>("compass-circle.png"))
@@ -53,7 +57,7 @@ public:
 
 class DemoController : public Controller
 {
-    sref<Compass> _compass;
+    gref<Compass> _compass;
 public:
     explicit DemoController(Platform& platform) : Controller(platform)
     {

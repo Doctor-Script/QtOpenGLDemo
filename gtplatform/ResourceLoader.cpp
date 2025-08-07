@@ -10,7 +10,7 @@ namespace gt
 {
     ResourceLoader::ResourceLoader(Platform&) { }
 
-    OpResult ResourceLoader::load(Resource::Name name, sref<Texture>& texture)
+    OpResult ResourceLoader::load(Resource::Name name, gref<Texture>& texture)
     {
         std::string prefix(":/resources/");
         std::string fullPath = prefix.append(name);
