@@ -1,10 +1,6 @@
-//#define DEBUG_REF_ENABLE
-
 #include "gtengine/gtengine.h"
 using namespace gt;
 
-
-//int gt::totalCount = 0;
 
 class Compass : public Node2D
 {
