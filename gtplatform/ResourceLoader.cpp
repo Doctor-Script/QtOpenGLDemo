@@ -23,4 +23,11 @@ namespace gt
 
         return texture->fill(data, img.width(), img.height(), GL_BGRA);
     }
+
+    OpResult ResourceLoader::load(Resource::Name name, gref<Font>& font)
+    {
+        GT_LOG("here %s", name);
+        GT_LOG("!!!! Loading font");
+        return OpResult::OK;
+    }
 }

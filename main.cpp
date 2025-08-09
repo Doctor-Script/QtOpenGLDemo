@@ -7,6 +7,7 @@ class Compass : public Node2D
     const gref<Sprite> _bg;
     gref<Sprite> _target;
     gref<Sprite> _overlay;
+    gref<Text> _text;
 
 public:
     explicit Compass(Node::Initalizer initalizer) : Node2D(initalizer), _bg(child<Sprite>("compass-circle.png"))
@@ -16,6 +17,10 @@ public:
         auto arrow = resources().get<Texture>("arrow-mark.png");
         _target = _bg->child<Sprite>(arrow);
         _overlay = child<Sprite>(arrow, Color::f(1.0f, 0.5f, 0.0f, 1.0f));
+
+
+        auto font = resources().get<Font>("digits.fnt");
+        _text = child<Text>();
     }
 
     void start() override

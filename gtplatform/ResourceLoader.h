@@ -2,6 +2,8 @@
 
 #include "gtengine/resources/Resource.h"
 #include "gtengine/resources/Texture.h"
+#include "gtengine/resources/Font.h"
+
 
 namespace gt
 {
@@ -19,5 +21,6 @@ namespace gt
         }
 
         OpResult load(Resource::Name name, gref<Texture>& result);
+        OpResult load(Resource::Name name, gref<Font>& result);
     };
 }
