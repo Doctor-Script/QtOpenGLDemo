@@ -4,5 +4,7 @@
         <file>resources/compass-circle.png</file>
         <file>resources/folder/flower.jpg</file>
         <file>resources/arrow-mark.png</file>
+        <file>resources/digits.fnt</file>
+        <file>resources/digits.png</file>
     </qresource>
 </RCC>
