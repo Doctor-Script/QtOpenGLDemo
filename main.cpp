@@ -20,7 +20,8 @@ public:
 
 
         auto font = resources().get<Font>("digits");
-        _text = child<Text>();
+        _text = child<Text>(font);
+        _text->_value = "123";
     }
 
     void start() override
