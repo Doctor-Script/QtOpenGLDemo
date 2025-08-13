@@ -19,7 +19,7 @@ public:
         _overlay = child<Sprite>(arrow, Color::f(1.0f, 0.5f, 0.0f, 1.0f));
 
 
-        auto font = resources().get<Font>("digits.fnt");
+        auto font = resources().get<Font>("digits");
         _text = child<Text>();
     }
 

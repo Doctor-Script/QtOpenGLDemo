@@ -7,6 +7,7 @@
 
 namespace gt
 {
+    class ResourceManager;
     class Platform;
 
     class ResourceLoader
@@ -14,13 +15,13 @@ namespace gt
     public:
         ResourceLoader(Platform&);
 
-        template <typename T> OpResult late(gref<Resource> resource)
+        template <typename T> OpResult late(ResourceManager& manager, gref<Resource> resource)
         {
             gref<T> specific = s_cast<T>(resource);
-            return load(specific->name(), specific);
+            return load(manager, specific->name(), specific);
         }
 
-        OpResult load(Resource::Name name, gref<Texture>& result);
-        OpResult load(Resource::Name name, gref<Font>& result);
+        OpResult load(ResourceManager& manager, Resource::Name name, gref<Texture>& result);
+        OpResult load(ResourceManager& manager, Resource::Name name, gref<Font>& result);
     };
 }

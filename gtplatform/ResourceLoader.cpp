@@ -1,5 +1,7 @@
 #include "ResourceLoader.h"
 
+#include "gtengine/resources/ResourceManager.h"
+
 #include "gtengine/utils/types.h"
 #include "gtengine/utils/Log.h"
 
@@ -19,7 +21,7 @@ namespace gt
 {
     ResourceLoader::ResourceLoader(Platform&) { }
 
-    OpResult ResourceLoader::load(Resource::Name name, gref<Texture>& texture)
+    OpResult ResourceLoader::load(ResourceManager& manager, Resource::Name name, gref<Texture>& texture)
     {
         std::string prefix(":/resources/");
         std::string fullPath = prefix.append(name);
@@ -136,11 +138,11 @@ bool loadBMFontText(const std::string &fntPath, gref<Font>& font)
 }
 
 
-    OpResult ResourceLoader::load(Resource::Name name, gref<Font>& font)
+    OpResult ResourceLoader::load(ResourceManager& manager, Resource::Name name, gref<Font>& font)
     {
 
         std::string prefix(":/resources/");
-        std::string filename = prefix.append(name);
+        std::string filename = prefix.append(name).append(".fnt");
 
 //        std::string filename = "myfont.fnt"; // change to your .fnt file
 //        BitmapFont font;
@@ -181,7 +183,18 @@ bool loadBMFontText(const std::string &fntPath, gref<Font>& font)
             std::cout << " (" << it->first.first << "," << it->first.second << ") -> " << it->second << "\n";
         }
 
+        int len = strlen(name);
+        char texname[len + 4];
+        strcpy(texname, name); // copy string one into the result.
+        strcat(texname, ".png"); // append string two to the result.
 
+        std::cout << texname <<"\n\n";
+
+//        std::string texname = prefix.append(name).append(".fnt");
+
+        // TODO use texture name from .fnt file
+        font->texture = manager.get<Texture>(texname);
+        // TODO check errors
 
         return OpResult::OK;
     }
