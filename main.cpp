@@ -21,7 +21,7 @@ public:
 
         auto font = resources().get<Font>("digits");
         _text = child<Text>(font);
-        _text->_value = "5";
+        _text->_value = "561";
     }
 
     void start() override
