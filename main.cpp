@@ -8,6 +8,7 @@ class Compass : public Node2D
     gref<Sprite> _target;
     gref<Sprite> _overlay;
     gref<Text> _text;
+    gref<Sprite> _place;
 
 public:
     explicit Compass(Node::Initalizer initalizer) : Node2D(initalizer), _bg(child<Sprite>("compass-circle.png"))
@@ -19,9 +20,14 @@ public:
         _overlay = child<Sprite>(arrow, Color::f(1.0f, 0.5f, 0.0f, 1.0f));
 
 
+//        float a = 20;
+        _place = child<Sprite>("");
+//        place->transform.setAngle(a);
+
         auto font = resources().get<Font>("digits");
         _text = child<Text>(font);
         _text->_value = "561";
+//        _text->transform.setAngle(a);
     }
 
     void start() override
@@ -53,6 +59,9 @@ public:
     void tick() override
     {
         _bg->transform.setAngle(_bg->transform.angle() + 10 * time().delta());
+
+//        _text->transform.setAngle(_text->transform.angle() - 10 * time().delta());
+//        _place->transform.setAngle(_place->transform.angle() - 10 * time().delta());
     }
 };
 
