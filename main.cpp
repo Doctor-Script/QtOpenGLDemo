@@ -25,7 +25,7 @@ public:
 //        place->transform.setAngle(a);
 
         auto font = resources().get<Font>("digits");
-        _text = child<Text>(font);
+        _text = child<Text>(font, 10);
         _text->_value = "561";
 //        _text->transform.setAngle(a);
     }
