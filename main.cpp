@@ -60,8 +60,9 @@ public:
     {
         _bg->transform.setAngle(_bg->transform.angle() + 10 * time().delta());
 
-//        _text->transform.setAngle(_text->transform.angle() - 10 * time().delta());
-//        _place->transform.setAngle(_place->transform.angle() - 10 * time().delta());
+        const float speed = -70.0f;
+        _text->transform.setAngle(_text->transform.angle() + speed * time().delta());
+        _place->transform.setAngle(_place->transform.angle() + speed * time().delta());
     }
 };
 
