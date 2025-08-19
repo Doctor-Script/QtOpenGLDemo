@@ -124,6 +124,10 @@ namespace gt
             PLATFORM(glUniformMatrix4fv(location, count, transpose, value));
         }
 
+        WRAP void Uniform1f(GLint location, GLfloat x) {
+            PLATFORM(glUniform1f(location, x));
+        }
+
         WRAP void Uniform4f(GLint location, GLfloat x, GLfloat y, GLfloat z, GLfloat w) {
             PLATFORM(glUniform4f(location, x, y, z, w));
         }

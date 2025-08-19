@@ -6,5 +6,7 @@
         <file>resources/arrow-mark.png</file>
         <file>resources/digits.fnt</file>
         <file>resources/digits.png</file>
+        <file>resources/digits-sdf.fnt</file>
+        <file>resources/digits-sdf.png</file>
     </qresource>
 </RCC>

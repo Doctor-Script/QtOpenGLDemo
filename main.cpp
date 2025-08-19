@@ -24,8 +24,8 @@ public:
         _place = child<Sprite>("");
 //        place->transform.setAngle(a);
 
-        auto font = resources().get<Font>("digits");
-        _text = child<Text>(font, 10);
+        auto font = resources().get<Font>("digits-sdf");
+        _text = child<Text>(font, 50);
         _text->_value = "561";
 //        _text->transform.setAngle(a);
     }
@@ -60,7 +60,7 @@ public:
     {
         _bg->transform.setAngle(_bg->transform.angle() + 10 * time().delta());
 
-        const float speed = -70.0f;
+        const float speed = 0;//-70.0f;
         _text->transform.setAngle(_text->transform.angle() + speed * time().delta());
         _place->transform.setAngle(_place->transform.angle() + speed * time().delta());
     }
