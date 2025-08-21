@@ -1,6 +1,5 @@
 #include "Platform.h"
 
-#include "gtplatform/gl.h"
 #include "gtengine/Controller.h"
 #include "gtengine/utils/Log.h"
 
@@ -20,11 +19,7 @@ namespace gt
 
     void Platform::init()
     {
-        gl::_functions = QOpenGLContext::currentContext()->functions();
-
-        _controller.init();
         _controller.start();
-
         _controller._time.start();
     }
 

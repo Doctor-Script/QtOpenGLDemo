@@ -4,6 +4,9 @@
 #include <QBasicTimer>
 #include <QElapsedTimer>
 
+#include "gtplatform/gl.h"
+#include "gtengine/utils/delayed.h"
+
 
 namespace gt
 {
@@ -29,16 +32,19 @@ namespace gt
     {
         //Q_OBJECT
 
-        TController _controller;
+        delayed<TController> _controller;
         Platform _platform;
         int _timer;
 
     public:
         explicit GtWidget(QWidget *parent = nullptr)
-            : QOpenGLWidget(parent), _controller(_platform), _platform(_controller)
+            : QOpenGLWidget(parent), _platform(*_controller.get())
         { }
 
-        void initializeGL() override {
+        void initializeGL() override
+        {
+            gl::_functions = QOpenGLContext::currentContext()->functions();
+            _controller.construct(_platform);
             _platform.init();
         }
 
