@@ -12,7 +12,7 @@ namespace gt
 
     class ResourceLoader
     {
-        QString _prefix;
+        const QString _prefix;
     public:
         ResourceLoader(Platform&);
 
