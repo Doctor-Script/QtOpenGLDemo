@@ -15,7 +15,28 @@ public:
     {
 //        _bg = child<Sprite>("compass-circle.png");
 
-        auto arrow = resources().get<Texture>("arrow-mark.png");
+        static GLubyte smiley[] = /* 16x16 smiley face */
+        {
+            0x03, 0xc0, /*       ****       */
+            0x0f, 0xf0, /*     ********     */
+            0x1e, 0x78, /*    ****  ****    */
+            0x39, 0x9c, /*   ***  **  ***   */
+            0x77, 0xee, /*  *** ****** ***  */
+            0x6f, 0xf6, /*  ** ******** **  */
+            0xff, 0xff, /* **************** */
+            0xff, 0xff, /* **************** */
+            0xff, 0xff, /* **************** */
+            0xff, 0xff, /* **************** */
+            0x73, 0xce, /*  ***  ****  ***  */
+            0x73, 0xce, /*  ***  ****  ***  */
+            0x3f, 0xfc, /*   ************   */
+            0x1f, 0xf8, /*    **********    */
+            0x0f, 0xf0, /*     ********     */
+            0x03, 0xc0  /*       ****       */
+        };
+
+        auto arrow = resources().add<Texture>(Texture::Builder("mono").mono(smiley, 16, 16));
+//        auto arrow = resources().get<Texture>("arrow-mark.png");
         _target = _bg->child<Sprite>(arrow);
         _overlay = child<Sprite>(arrow, Color::f(1.0f, 0.5f, 0.0f, 1.0f));
 
@@ -24,7 +45,7 @@ public:
         _place = child<Sprite>("");
 //        place->transform.setAngle(a);
 
-        auto font = resources().get<Font>("digits-sdf");
+        auto font = resources().get<Font>("digits-sdf.fnt");
         _text = child<Text>(font, 50);
         _text->_value = "561";
 //        _text->transform.setAngle(a);

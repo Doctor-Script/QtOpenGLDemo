@@ -167,6 +167,14 @@ namespace gt
         WRAP void EnableVertexAttribArray(GLuint index) {
             PLATFORM(glEnableVertexAttribArray(index));
         }
+
+        WRAP void PixelMapfv(GLenum map,GLsizei mapsize,const GLfloat* values) {
+            NATIVE(glPixelMapfv(map, mapsize, values));
+        }
+
+        WRAP void PixelStorei(GLenum pname,GLint param) {
+            PLATFORM(glPixelStorei(pname, param));
+        }
     };
 
 #undef WRAP
