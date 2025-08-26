@@ -41,14 +41,19 @@ public:
         _overlay = child<Sprite>(arrow, Color::f(1.0f, 0.5f, 0.0f, 1.0f));
 
 
-//        float a = 20;
-        _place = child<Sprite>("");
-//        place->transform.setAngle(a);
-
         auto font = resources().get<Font>("digits-sdf.fnt");
-        _text = child<Text>(font, 50);
-        _text->_value = "561";
-//        _text->transform.setAngle(a);
+        float w = 200, h = 200;
+        _place = child<Sprite>("");
+        _place->transform.setWidth(w);
+        _place->transform.setHeight(h);
+
+
+        _text = child<Text>(font, 72);
+        _text->transform.setWidth(w);
+        _text->transform.setHeight(h);
+        _text->setValue("561");
+        _text->setAlign(Text::H_RIGHT | Text::V_BOTTOM);
+        _text->setColor(Color::blue());
     }
 
     void start() override
