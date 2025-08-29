@@ -168,12 +168,12 @@ namespace gt
             PLATFORM(glEnableVertexAttribArray(index));
         }
 
-        WRAP void PixelMapfv(GLenum map,GLsizei mapsize,const GLfloat* values) {
-            NATIVE(glPixelMapfv(map, mapsize, values));
-        }
-
         WRAP void PixelStorei(GLenum pname,GLint param) {
             PLATFORM(glPixelStorei(pname, param));
+        }
+
+        WRAP void GetTexLevelParameteriv(GLenum target, GLint level, GLenum pname, GLint* params) {
+            NATIVE(glGetTexLevelParameteriv (target, level, pname, params));
         }
     };
 
