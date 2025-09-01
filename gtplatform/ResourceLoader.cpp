@@ -22,7 +22,7 @@ namespace gt
 
         if (!data)
         {
-            builder.rgba(Color::magenta().toRGBA(), 1, 1);
+            builder.failed();
             FAIL_OP("Texture '%s' not found", builder.name());
         }
 
@@ -33,7 +33,9 @@ namespace gt
     OpResult ResourceLoader::load(ResourceManager& manager, Font::Builder& builder)
     {
         QFile file(_prefix + builder.name());
-        if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
+        {
+            builder.failed(manager);
             FAIL_OP("Font '%s' not found", builder.name());
         }
 
@@ -41,7 +43,7 @@ namespace gt
         while (!in.atEnd())
         {
             QString line = in.readLine();
-            builder.line(line.toStdString().c_str(), manager);
+            builder.parseLine(line.toStdString().c_str(), manager);
         }
 
         file.close();
