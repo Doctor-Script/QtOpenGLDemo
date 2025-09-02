@@ -44,6 +44,7 @@ namespace gt
         void initializeGL() override
         {
             gl::_functions = QOpenGLContext::currentContext()->functions();
+            gl::_extra = QOpenGLContext::currentContext()->extraFunctions();
             _controller.construct(_platform);
             _platform.init();
         }

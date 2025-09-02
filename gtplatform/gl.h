@@ -1,6 +1,7 @@
 #pragma once
 
 #include <QOpenGLFunctions>
+#include <QOpenGLExtraFunctions>
 
 
 namespace gt
@@ -8,10 +9,12 @@ namespace gt
 #define WRAP static inline
 #define NATIVE(f) ::f
 #define PLATFORM(f) _functions->f
+#define EXTRA(f) _extra->f
 
     struct gl
     {
         static QOpenGLFunctions* _functions;
+        static QOpenGLExtraFunctions* _extra;
 
         WRAP void GenTextures(GLsizei n, GLuint *textures) {
             NATIVE(glGenTextures(n, textures));
@@ -175,9 +178,18 @@ namespace gt
         WRAP void GetTexLevelParameteriv(GLenum target, GLint level, GLenum pname, GLint* params) {
             NATIVE(glGetTexLevelParameteriv (target, level, pname, params));
         }
+
+        WRAP GLvoid* MapBufferRange(GLenum target, GLintptr offset, GLsizeiptr length, GLbitfield access) {
+            return EXTRA(glMapBufferRange(target, offset, length, access));
+        }
+
+        WRAP GLboolean UnmapBuffer(GLenum target) {
+            return EXTRA(glUnmapBuffer(target));
+        }
     };
 
 #undef WRAP
 #undef NATIVE
 #undef PLATFORM
+#undef EXTRA
 }
