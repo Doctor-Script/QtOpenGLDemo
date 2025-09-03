@@ -41,7 +41,7 @@ public:
         _overlay = child<Sprite>(arrow, Color::f(1.0f, 0.5f, 0.0f, 1.0f));
 
 
-        auto font = resources().get<Font>("digits-sdf.fnt");
+        auto font = resources().get<Font>("ua-sdf.fnt");
         float w = 200, h = 200;
         _place = child<Sprite>("");
         _place->transform.setWidth(w);
@@ -51,7 +51,7 @@ public:
         _text = child<Text>(font, 72);
         _text->transform.setWidth(w);
         _text->transform.setHeight(h);
-        _text->setValue("561");
+        _text->setValue("Ab12.Ійа");
         _text->setAlign(Text::H_RIGHT | Text::V_BOTTOM);
         _text->setColor(Color::blue());
     }
