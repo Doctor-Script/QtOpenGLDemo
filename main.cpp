@@ -48,12 +48,9 @@ public:
         _place->transform.setHeight(h);
 
 
-        _text = child<Text>(font, 72);
+        _text = child<Text>(font, 72)->str("Ab12.ІйаїЇ")->align(Text::H_RIGHT | Text::V_BOTTOM)->color(Color::blue());
         _text->transform.setWidth(w);
         _text->transform.setHeight(h);
-        _text->setValue("Ab12.Ійа");
-        _text->setAlign(Text::H_RIGHT | Text::V_BOTTOM);
-        _text->setColor(Color::blue());
     }
 
     void start() override
