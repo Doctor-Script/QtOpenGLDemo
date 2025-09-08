@@ -21,6 +21,7 @@ namespace gt
     #ifndef QT_NO_OPENGL
         GtWidget<TController> widget(nullptr);
         widget.resize(640, 480);
+//        widget.showFullScreen();
         widget.show();
     #else
         QLabel note("OpenGL Support required");
