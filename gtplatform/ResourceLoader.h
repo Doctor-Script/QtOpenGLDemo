@@ -2,22 +2,22 @@
 
 #include "gtengine/resources/Resource.h"
 #include "gtengine/resources/Texture.h"
+#include "gtengine/resources/Font.h"
+
 
 namespace gt
 {
+    class ResourceManager;
     class Platform;
 
     class ResourceLoader
     {
+        const QString _prefix;
     public:
         ResourceLoader(Platform&);
 
-        template <typename T> OpResult late(gref<Resource> resource)
-        {
-            gref<T> specific = s_cast<T>(resource);
-            return load(specific->name(), specific);
-        }
+        OpResult load(ResourceManager& manager, Texture::Builder& builder);
 
-        OpResult load(Resource::Name name, gref<Texture>& result);
+        OpResult load(ResourceManager& manager, Font::Builder& builder);
     };
 }
