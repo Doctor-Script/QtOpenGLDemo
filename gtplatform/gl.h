@@ -7,7 +7,7 @@
 namespace gt
 {
 #define WRAP static inline
-#define NATIVE(f) ::f
+#define NATIVE(f) _functions->f
 #define PLATFORM(f) _functions->f
 #define EXTRA(f) _extra->f
 
@@ -15,6 +15,10 @@ namespace gt
     {
         static QOpenGLFunctions* _functions;
         static QOpenGLExtraFunctions* _extra;
+
+        WRAP GLenum GetError() {
+            return NATIVE(glGetError());
+        }
 
         WRAP void GenTextures(GLsizei n, GLuint *textures) {
             NATIVE(glGenTextures(n, textures));
@@ -176,7 +180,7 @@ namespace gt
         }
 
         WRAP void GetTexLevelParameteriv(GLenum target, GLint level, GLenum pname, GLint* params) {
-            NATIVE(glGetTexLevelParameteriv (target, level, pname, params));
+            EXTRA(glGetTexLevelParameteriv(target, level, pname, params));
         }
 
         WRAP GLvoid* MapBufferRange(GLenum target, GLintptr offset, GLsizeiptr length, GLbitfield access) {

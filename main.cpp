@@ -35,8 +35,10 @@ public:
             0x03, 0xc0  /*       ****       */
         };
 
-        auto arrow = resources().add<Texture>(Texture::Builder("mono").mono(smiley, 16, 16));
+//        auto arrow = resources().add<Texture>(Texture::Builder("mono").mono(smiley, 16, 16));
 //        auto arrow = resources().get<Texture>("arrow-mark.png");
+//        auto arrow = resources().get<Texture>("cube.png");
+        auto arrow = resources().get<Texture>("folder/flower.jpg");
         _target = _bg->child<Sprite>(arrow);
         _overlay = child<Sprite>(arrow, Color::f(1.0f, 0.5f, 0.0f, 1.0f));
 
