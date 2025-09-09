@@ -124,4 +124,4 @@ public:
     }
 };
 
-GT_RUN(DemoController);
+GT_RUN(DemoController, GT_RES_DEFAULT);
