@@ -28,7 +28,7 @@ namespace gt
         void tick();
     };
 
-    template<typename TController> class GtWidget : public QOpenGLWindow
+    template<typename TController> class GtWindow : public QOpenGLWindow
     {
         //Q_OBJECT
 
@@ -37,7 +37,7 @@ namespace gt
         int _timer;
 
     public:
-        explicit GtWidget() : _platform(*_controller.get()) { }
+        explicit GtWindow() : _platform(*_controller.get()) { }
 
         void initializeGL() override
         {

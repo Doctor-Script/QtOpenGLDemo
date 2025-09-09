@@ -30,7 +30,7 @@ namespace gt
         //app.setApplicationVersion("0.1");
 
     #ifndef QT_NO_OPENGL
-        GtWidget<TController> widget;
+        GtWindow<TController> widget;
         if (res.foolscreen) {
             widget.showFullScreen();
         }
