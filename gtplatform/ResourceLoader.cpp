@@ -26,7 +26,7 @@ namespace gt
             FAIL_OP("Texture '%s' not found", builder.name());
         }
 
-        builder.fromFile(data, img.width(), img.height(), GL_BGRA);
+        builder.fromFile(data, img.width(), img.height(), GL_BGRA_EXT);
         return OpResult::OK;
     }
 

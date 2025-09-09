@@ -7,7 +7,6 @@
 namespace gt
 {
 #define WRAP static inline
-#define NATIVE(f) ::f
 #define PLATFORM(f) _functions->f
 #define EXTRA(f) _extra->f
 
@@ -16,44 +15,48 @@ namespace gt
         static QOpenGLFunctions* _functions;
         static QOpenGLExtraFunctions* _extra;
 
+        WRAP GLenum GetError() {
+            return PLATFORM(glGetError());
+        }
+
         WRAP void GenTextures(GLsizei n, GLuint *textures) {
-            NATIVE(glGenTextures(n, textures));
+            PLATFORM(glGenTextures(n, textures));
         }
 
         WRAP void DeleteTextures(GLsizei n, const GLuint *textures) {
-            NATIVE(glDeleteTextures(n, textures));
+            PLATFORM(glDeleteTextures(n, textures));
         }
 
         WRAP void BindTexture(GLenum target, GLuint texture) {
-            NATIVE(glBindTexture(target, texture));
+            PLATFORM(glBindTexture(target, texture));
         }
 
         WRAP void TexImage2D(GLenum target, GLint level, GLint internalformat, GLsizei width, GLsizei height, GLint border, GLenum format, GLenum type, const GLvoid *pixels) {
-            NATIVE(glTexImage2D(target, level, internalformat, width, height, border, format, type, pixels));
+            PLATFORM(glTexImage2D(target, level, internalformat, width, height, border, format, type, pixels));
         }
 
         WRAP void TexParameteri(GLenum target, GLenum pname, GLint param) {
-            NATIVE(glTexParameteri(target, pname, param));
+            PLATFORM(glTexParameteri(target, pname, param));
         }
 
         WRAP void ClearColor(GLclampf red,GLclampf green,GLclampf blue,GLclampf alpha) {
-            NATIVE(glClearColor(red, green, blue, alpha));
+            PLATFORM(glClearColor(red, green, blue, alpha));
         }
 
         WRAP void Clear(GLbitfield mask) {
-            NATIVE(glClear(mask));
+            PLATFORM(glClear(mask));
         }
 
          WRAP void Enable(GLenum cap) {
-            NATIVE(glEnable(cap));
+            PLATFORM(glEnable(cap));
         }
 
          WRAP void BlendFunc(GLenum sfactor, GLenum dfactor) {
-            NATIVE(glBlendFunc(sfactor, dfactor));
+            PLATFORM(glBlendFunc(sfactor, dfactor));
          }
 
          WRAP void DrawElements(GLenum mode, GLsizei count, GLenum type, const GLvoid *indices) {
-             NATIVE(glDrawElements(mode, count, type, indices));
+             PLATFORM(glDrawElements(mode, count, type, indices));
          }
 
         // TODO
@@ -176,7 +179,7 @@ namespace gt
         }
 
         WRAP void GetTexLevelParameteriv(GLenum target, GLint level, GLenum pname, GLint* params) {
-            NATIVE(glGetTexLevelParameteriv (target, level, pname, params));
+            EXTRA(glGetTexLevelParameteriv(target, level, pname, params));
         }
 
         WRAP GLvoid* MapBufferRange(GLenum target, GLintptr offset, GLsizeiptr length, GLbitfield access) {
@@ -189,7 +192,6 @@ namespace gt
     };
 
 #undef WRAP
-#undef NATIVE
 #undef PLATFORM
 #undef EXTRA
 }

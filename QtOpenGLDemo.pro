@@ -1,10 +1,12 @@
-#QT       += core gui opengl
-QT       += core gui
-LIBS += -lopengl32
+QT += core gui
+QT += opengl
+#LIBS += -lopengl32
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 CONFIG += c++11
+CONFIG -= debug_and_release 
+CONFIG += debug
 
 # You can make your code fail to compile if it uses deprecated APIs.
 # In order to do so, uncomment the following line.
@@ -17,7 +19,7 @@ SOURCES += \
 
 HEADERS += \
     $$files(gtengine/*.h, true) \
-    $$files(gtplatform/*.h, true)
+    $$files(gtplatform/*.h, true) 
 
 RESOURCES += \
     shaders.qrc \

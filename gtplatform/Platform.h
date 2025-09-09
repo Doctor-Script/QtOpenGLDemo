@@ -1,6 +1,6 @@
 #pragma once
 
-#include <QOpenGLWidget>
+#include <QOpenGLWindow>
 #include <QBasicTimer>
 #include <QElapsedTimer>
 
@@ -28,7 +28,7 @@ namespace gt
         void tick();
     };
 
-    template<typename TController> class GtWidget : public QOpenGLWidget
+    template<typename TController> class GtWindow : public QOpenGLWindow
     {
         //Q_OBJECT
 
@@ -37,9 +37,7 @@ namespace gt
         int _timer;
 
     public:
-        explicit GtWidget(QWidget *parent = nullptr)
-            : QOpenGLWidget(parent), _platform(*_controller.get())
-        { }
+        explicit GtWindow() : _platform(*_controller.get()) { }
 
         void initializeGL() override
         {
