@@ -37,9 +37,7 @@ namespace gt
         int _timer;
 
     public:
-        explicit GtWidget(QWidget *parent = nullptr)
-            : _platform(*_controller.get())
-        { }
+        explicit GtWidget() : _platform(*_controller.get()) { }
 
         void initializeGL() override
         {
