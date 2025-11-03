@@ -4,12 +4,12 @@
 #include "gtengine/utils/Log.h"
 
 #include <QSurfaceFormat>
-#include <QApplication>
+//#include <QApplication>
 
 
 namespace gt
 {
-    Platform::Platform(void* arg) : _controller(nullptr)
+    Platform::Platform(int count, void** args) : _app(count, reinterpret_cast<char**>(args)), _controller(nullptr)
     {
         GT_LOG_INFO("Launch Platform");
 
@@ -31,9 +31,10 @@ namespace gt
     {
         _build = build;
 
-        int argc = 0;          // must be a variable, not a literal
-        char **argv = nullptr; // no arguments
-        QApplication app(argc, argv);
+//        int argc = 0;          // must be a variable, not a literal
+//        char **argv = nullptr; // no arguments
+//        QApplication app(argc, argv);
+
 
 
 //        QApplication app(0, nullptr);//(argc, argv);
@@ -59,7 +60,7 @@ namespace gt
         w.resize(640, 480);
         w.show();
 
-        return app.exec() ? OpResult::FAIL : OpResult::OK;
+        return _app.exec() ? OpResult::FAIL : OpResult::OK;
     }
 
 
@@ -83,6 +84,7 @@ namespace gt
         _controller->draw();
         int waitTime = _controller->_time.calculateWaitTime();
         return waitTime >= 0 ? waitTime : 0;
+
     }
 
     void Platform::tick()

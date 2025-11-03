@@ -3,6 +3,7 @@
 #include <QOpenGLWindow>
 #include <QBasicTimer>
 #include <QElapsedTimer>
+#include <QApplication>
 
 #include "gtplatform/gl.h"
 #include "gtengine/utils/delayed.h"
@@ -16,13 +17,20 @@ namespace gt
     class Controller;
     typedef std::function<Controller*()> BuildController;
 
+    struct args
+    {
+        int c;
+        char **v;
+    };
+
     class Platform
     {
+        QApplication _app;
         Controller* _controller;
         BuildController _build;
 
     public:
-        explicit Platform(void* arg);
+        explicit Platform(int count, void** args);
 
         OpResult run(BuildController build);
 
@@ -60,7 +68,6 @@ namespace gt
 
             void paintGL() override {
                 _timer = startTimer(_platform.draw());
-//                _platform.draw();
             }
 
             void timerEvent(QTimerEvent*) override
@@ -85,11 +92,12 @@ namespace gt
         Platform _platform;
 
     public:
-        explicit GtWindow(void* arg) : _platform(arg) { }
+        explicit GtWindow(int count, void** args) : _platform(count, args) { }
 
         OpResult run()
         {
-            CHECK_OP(_platform.run([this]() { return _controller.construct(_platform); }));
+            auto build = [this]() { return _controller.construct(_platform); };
+            CHECK_OP(_platform.run(build));
             return OpResult::OK;
         }
     };

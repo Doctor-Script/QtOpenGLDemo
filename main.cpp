@@ -127,6 +127,6 @@ public:
 
 //GT_RUN(DemoController, GT_RES_DEFAULT);
 
-int main(int c, char *a[]) { return !gt::GtWindow<DemoController>(nullptr).run(); }
+int main(int c, char *a[]) { return !gt::GtWindow<DemoController>(c, reinterpret_cast<void**>(a)).run(); }
 
 //#define GT_RUN(controller, resolution) extern "C" void android_main(struct android_app* app) { return gt::GtWindow<controller>(app).run(); }
