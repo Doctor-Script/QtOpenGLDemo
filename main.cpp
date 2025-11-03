@@ -1,4 +1,5 @@
 #include "gtengine/gtengine.h"
+#include "gtplatform/gtplatform.h"
 using namespace gt;
 
 
@@ -124,4 +125,8 @@ public:
     }
 };
 
-GT_RUN(DemoController, GT_RES_DEFAULT);
+//GT_RUN(DemoController, GT_RES_DEFAULT);
+
+int main(int c, char *a[]) { return !gt::GtWindow<DemoController>(nullptr).run(); }
+
+//#define GT_RUN(controller, resolution) extern "C" void android_main(struct android_app* app) { return gt::GtWindow<controller>(app).run(); }

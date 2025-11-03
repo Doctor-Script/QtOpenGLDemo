@@ -15,6 +15,18 @@ namespace gt
         static QOpenGLFunctions* _functions;
         static QOpenGLExtraFunctions* _extra;
 
+        WRAP const GLubyte* GetString(GLenum name) {
+            return PLATFORM(glGetString (name));
+        }
+
+        WRAP void GetIntegerv(GLenum pname, GLint* data) {
+            PLATFORM(glGetIntegerv(pname, data));
+        }
+
+        WRAP const GLubyte* GetStringi(GLenum name, GLuint index) {
+              return  EXTRA(glGetStringi(name, index));
+        }
+
         WRAP GLenum GetError() {
             return PLATFORM(glGetError());
         }
