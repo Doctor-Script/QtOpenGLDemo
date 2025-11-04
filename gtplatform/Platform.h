@@ -17,10 +17,11 @@ namespace gt
     class Controller;
     typedef std::function<Controller*()> BuildController;
 
-    struct args
+    struct Resoulution
     {
-        int c;
-        char **v;
+        int width;
+        int height;
+        bool foolscreen;
     };
 
     class Platform
@@ -30,9 +31,9 @@ namespace gt
         BuildController _build;
 
     public:
-        explicit Platform(int count, void** args);
+        explicit Platform(int count, void* args);
 
-        OpResult run(BuildController build);
+        OpResult run(void* settings, BuildController build);
 
         void init();
 
@@ -86,54 +87,19 @@ namespace gt
 
 
 
-    template<typename TController> class GtWindow
-    {
-        delayed<TController> _controller;
-        Platform _platform;
+//    template<typename TController> class GtWindow
+//    {
+//        delayed<TController> _controller;
+//        Platform _platform;
 
-    public:
-        explicit GtWindow(int count, void** args) : _platform(count, args) { }
+//    public:
+//        explicit GtWindow(int count, void* args) : _platform(count, args) { }
 
-        OpResult run()
-        {
-            auto build = [this]() { return _controller.construct(_platform); };
-            CHECK_OP(_platform.run(build));
-            return OpResult::OK;
-        }
-    };
-
-/*
-    template<typename TController> class GtWindow : public QOpenGLWindow
-    {
-        //Q_OBJECT
-
-        delayed<TController> _controller;
-        Platform _platform;
-        int _timer;
-
-    public:
-        explicit GtWindow() : _platform(*_controller.get()) { }
-
-        void initializeGL() override
-        {
-            gl::_functions = QOpenGLContext::currentContext()->functions();
-            gl::_extra = QOpenGLContext::currentContext()->extraFunctions();
-            _controller.construct(_platform);
-            _platform.init();
-        }
-
-        void resizeGL(int width, int height) override {
-            _platform.resize(width, height);
-        }
-
-        void paintGL() override {
-            _timer = startTimer(_platform.draw());
-        }
-
-        void timerEvent(QTimerEvent*) override
-        {
-            _platform.tick();
-            update();
-        }
-    };//*/
+//        OpResult run(void* settings)
+//        {
+//            auto build = [this]() { return _controller.construct(_platform); };
+//            CHECK_OP(_platform.run(settings, build));
+//            return OpResult::OK;
+//        }
+//    };
 }

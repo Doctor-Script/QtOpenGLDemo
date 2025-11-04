@@ -6,10 +6,12 @@
 #include <QSurfaceFormat>
 //#include <QApplication>
 
+//#include "gtplatform/gtplatform.h"
+
 
 namespace gt
 {
-    Platform::Platform(int count, void** args) : _app(count, reinterpret_cast<char**>(args)), _controller(nullptr)
+    Platform::Platform(int count, void* args) : _app(count, reinterpret_cast<char**>(args)), _controller(nullptr)
     {
         GT_LOG_INFO("Launch Platform");
 
@@ -27,40 +29,26 @@ namespace gt
     }
 
 
-    OpResult Platform::run(BuildController build)
+    OpResult Platform::run(void* settings, BuildController build)
     {
         _build = build;
 
-//        int argc = 0;          // must be a variable, not a literal
-//        char **argv = nullptr; // no arguments
-//        QApplication app(argc, argv);
-
-
-
-//        QApplication app(0, nullptr);//(argc, argv);
-        //app.setApplicationName(name);
-        //app.setApplicationVersion("0.1");
-
-//        #ifndef QT_NO_OPENGL
-//            GtWindow<TController> widget;
-//            if (res.foolscreen) {
-//                widget.showFullScreen();
-//            }
-//            else
-//            {
-//                widget.resize(res.width, res.height);
-//                widget.show();
-//            }
-//        #else
-//            QLabel note("OpenGL Support required");
-//            note.show();
-//        #endif
-
+        auto res = static_cast<Resoulution*>(settings);
+#ifndef QT_NO_OPENGL
         GLWindow w(*this);
-        w.resize(640, 480);
-        w.show();
-
-        return _app.exec() ? OpResult::FAIL : OpResult::OK;
+        if (res->foolscreen) {
+            w.showFullScreen();
+        }
+        else
+        {
+            w.resize(res->width, res->height);
+            w.show();
+        }
+#else
+        QLabel note("OpenGL Support required");
+        note.show();
+#endif
+        return static_cast<OpResult>(!_app.exec());// ? OpResult::FAIL : OpResult::OK;
     }
 
 
