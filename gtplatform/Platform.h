@@ -30,11 +30,13 @@ namespace gt
 
     public:
         explicit Platform(int count, void* args);
+        ~Platform();
 
         OpResult run(void* settings, Construct<Controller> construct);
 
     private:
-        void init();
+        OpResult init();
+        OpResult destroy();
 
         void resize(int width, int height);
 

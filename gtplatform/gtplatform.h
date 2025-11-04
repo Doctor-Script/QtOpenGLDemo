@@ -11,7 +11,7 @@
 //#define GT_RES_FOOLSCREEN { 0, 0, true }
 //#define GT_RES_DEFAULT { 640, 480, false }
 
-#define GT_RUN(controller, resolution) int main(int c, char *a[]) { return !gt::App<Platform, controller>(c, a).run(&resolution); }
+#define GT_RUN(controller, resolution) int main(int argc, char *argv[]) { return !gt::App<Platform, controller>(argc, argv).run(&resolution); }
 
 namespace gt
 {
