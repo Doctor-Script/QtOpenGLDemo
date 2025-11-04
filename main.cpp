@@ -1,5 +1,5 @@
 #include "gtengine/gtengine.h"
-//#include "gtplatform/gtplatform.h"
+#include "gtplatform/gtplatform.h"
 using namespace gt;
 
 
@@ -133,5 +133,3 @@ Resoulution res = {
 };
 
 GT_RUN(DemoController, res);
-
-//int main(int c, char *a[]) { return !gt::App<DemoController>(c, a).run(&res); }

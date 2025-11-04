@@ -8,14 +8,12 @@
 #include "gtplatform/gl.h"
 #include "gtengine/utils/delayed.h"
 #include "gtengine/utils/types.h"
-
-#include <functional>
+#include "gtengine/App.h"
 
 
 namespace gt
 {
     class Controller;
-    typedef std::function<Controller*()> BuildController;
 
     struct Resoulution
     {
@@ -28,13 +26,14 @@ namespace gt
     {
         QApplication _app;
         Controller* _controller;
-        BuildController _build;
+        Construct<Controller> _construct;
 
     public:
         explicit Platform(int count, void* args);
 
-        OpResult run(void* settings, BuildController build);
+        OpResult run(void* settings, Construct<Controller> construct);
 
+    private:
         void init();
 
         void resize(int width, int height);
@@ -42,9 +41,6 @@ namespace gt
         int draw();
 
         void tick();
-
-
-
 
         class GLWindow : public QOpenGLWindow
         {
@@ -54,52 +50,12 @@ namespace gt
             int _timer;
 
         public:
-            explicit GLWindow(Platform& platform) : _platform(platform) { }
+            explicit GLWindow(Platform& platform);
 
-            void initializeGL() override
-            {
-                gl::_functions = QOpenGLContext::currentContext()->functions();
-                gl::_extra = QOpenGLContext::currentContext()->extraFunctions();
-                _platform.init();
-            }
-
-            void resizeGL(int width, int height) override {
-                _platform.resize(width, height);
-            }
-
-            void paintGL() override {
-                _timer = startTimer(_platform.draw());
-            }
-
-            void timerEvent(QTimerEvent*) override
-            {
-                _platform.tick();
-                update();
-            }
+            void initializeGL() override;
+            void resizeGL(int width, int height) override;
+            void paintGL() override;
+            void timerEvent(QTimerEvent*) override;
         };
-
-
-
-
     };
-
-
-
-
-
-//    template<typename TController> class GtWindow
-//    {
-//        delayed<TController> _controller;
-//        Platform _platform;
-
-//    public:
-//        explicit GtWindow(int count, void* args) : _platform(count, args) { }
-
-//        OpResult run(void* settings)
-//        {
-//            auto build = [this]() { return _controller.construct(_platform); };
-//            CHECK_OP(_platform.run(settings, build));
-//            return OpResult::OK;
-//        }
-//    };
 }

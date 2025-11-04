@@ -4,9 +4,6 @@
 #include "gtengine/utils/Log.h"
 
 #include <QSurfaceFormat>
-//#include <QApplication>
-
-//#include "gtplatform/gtplatform.h"
 
 
 namespace gt
@@ -20,18 +17,15 @@ namespace gt
         QSurfaceFormat::setDefaultFormat(format);
     }
 
-
-
     OpResult IPlatform::exit()
     {
         // TODO implement me
         return OpResult::OK;
     }
 
-
-    OpResult Platform::run(void* settings, BuildController build)
+    OpResult Platform::run(void* settings, Construct<Controller> construct)
     {
-        _build = build;
+        _construct = construct;
 
         auto res = static_cast<Resoulution*>(settings);
 #ifndef QT_NO_OPENGL
@@ -48,15 +42,12 @@ namespace gt
         QLabel note("OpenGL Support required");
         note.show();
 #endif
-        return static_cast<OpResult>(!_app.exec());// ? OpResult::FAIL : OpResult::OK;
+        return static_cast<OpResult>(!_app.exec());
     }
-
-
-
 
     void Platform::init()
     {
-        _controller = _build();
+        _controller = _construct();
         _controller->start();
         _controller->_time.start();
     }
@@ -85,5 +76,28 @@ namespace gt
 
         _controller->tick();
         _controller->tickChildren();
+    }
+
+    Platform::GLWindow::GLWindow(Platform& platform) : _platform(platform) { }
+
+    void Platform::GLWindow::initializeGL()
+    {
+        gl::_functions = QOpenGLContext::currentContext()->functions();
+        gl::_extra = QOpenGLContext::currentContext()->extraFunctions();
+        _platform.init();
+    }
+
+    void Platform::GLWindow::resizeGL(int width, int height) {
+        _platform.resize(width, height);
+    }
+
+    void Platform::GLWindow::paintGL() {
+        _timer = startTimer(_platform.draw());
+    }
+
+    void Platform::GLWindow::timerEvent(QTimerEvent*)
+    {
+        _platform.tick();
+        update();
     }
 }
