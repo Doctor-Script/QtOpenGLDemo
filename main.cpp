@@ -1,5 +1,4 @@
-#include "gtengine/gtengine.h"
-#include "gtplatform/gtplatform.h"
+#include "gtplatform/gt.h"
 using namespace gt;
 
 

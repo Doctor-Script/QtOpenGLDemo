@@ -1,5 +1,6 @@
 #pragma once
 
+#include "gtengine/gtengine.h"
 #include "gtplatform/Platform.h"
 
 #include <QApplication>
@@ -16,7 +17,7 @@
 #define GT_QT_DEFAULT { 640, 480, false }
 
 #define GT_MAIN(body) int main(int argc, char *argv[]) { gt::Platform::Settings GT_SETTINGS = GT_QT_DEFAULT; body }
-#define GT_RUN(controller) return !gt::App<Platform, controller>(argc, argv).run(GT_SETTINGS);
+#define GT_RUN(controller) return !gt::App<Platform, controller>(argc, argv).run(GT_SETTINGS)
 
 
 namespace gt

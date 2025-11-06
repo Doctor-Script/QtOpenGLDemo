@@ -22,12 +22,7 @@ namespace gt
         Construct<Controller> _construct;
 
     public:
-        struct Settings
-        {
-            int width;
-            int height;
-            bool foolscreen;
-        };
+        struct Settings;
 
         explicit Platform(int count, void* args);
         ~Platform();
@@ -58,6 +53,14 @@ namespace gt
             void resizeGL(int width, int height) override;
             void paintGL() override;
             void timerEvent(QTimerEvent*) override;
+        };
+
+    public:
+        struct Settings
+        {
+            int width;
+            int height;
+            bool foolscreen;
         };
     };
 }
