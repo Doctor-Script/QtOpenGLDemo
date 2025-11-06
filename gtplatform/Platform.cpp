@@ -1,7 +1,9 @@
 #include "Platform.h"
 
-#include "gtengine/Controller.h"
 #include "gtengine/utils/Log.h"
+#include "gtengine/Controller.h"
+
+#include "gtengine/utils/Debug.h"
 
 #include <QSurfaceFormat>
 
@@ -103,8 +105,13 @@ namespace gt
         _platform.resize(width, height);
     }
 
-    void Platform::GLWindow::paintGL() {
+    void Platform::GLWindow::paintGL()
+    {
+        // Manually call timer instead of sleep to return control to Qt.
         _timer = startTimer(_platform.draw());
+
+        // TODO fix freezes
+        Debug::tick();
     }
 
     void Platform::GLWindow::timerEvent(QTimerEvent*)
