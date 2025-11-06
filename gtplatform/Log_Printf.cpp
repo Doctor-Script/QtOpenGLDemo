@@ -2,12 +2,13 @@
 
 #include <cstdio>
 
+
 // Implementation shared for Qt, QNX, Linux
 namespace gt
 {
     inline void print(const char* prefix, const char* format, va_list args)
     {
-        printf(prefix);
+        printf("%s", prefix);
         vprintf(format, args);
         printf("\n");
         fflush(stdout);

@@ -126,10 +126,7 @@ public:
 };
 
 
-Resoulution res = {
-    .width = 640,
-    .height = 480,
-    .foolscreen = false
-};
-
-GT_RUN(DemoController, res);
+GT_MAIN (
+    GT_IF_QT(GT_SETTINGS = { .width = 640, .height = 480, .foolscreen = false });
+    GT_RUN(DemoController);
+)

@@ -23,7 +23,7 @@ namespace gt
         return OpResult::OK;
     }
 
-    OpResult Platform::run(void* settings, Construct<Controller> construct)
+    OpResult Platform::run(Settings& settings, Construct<Controller> construct)
     {
         _construct = construct;
 
@@ -31,15 +31,14 @@ namespace gt
         format.setDepthBufferSize(24);
         QSurfaceFormat::setDefaultFormat(format);
 
-        auto res = static_cast<Resoulution*>(settings);
 #ifndef QT_NO_OPENGL
         GLWindow w(*this);
-        if (res->foolscreen) {
+        if (settings.foolscreen) {
             w.showFullScreen();
         }
         else
         {
-            w.resize(res->width, res->height);
+            w.resize(settings.width, settings.height);
             w.show();
         }
 #else

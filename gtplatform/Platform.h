@@ -15,13 +15,6 @@ namespace gt
 {
     class Controller;
 
-    struct Resoulution
-    {
-        int width;
-        int height;
-        bool foolscreen;
-    };
-
     class Platform
     {
         QApplication _app;
@@ -29,10 +22,17 @@ namespace gt
         Construct<Controller> _construct;
 
     public:
+        struct Settings
+        {
+            int width;
+            int height;
+            bool foolscreen;
+        };
+
         explicit Platform(int count, void* args);
         ~Platform();
 
-        OpResult run(void* settings, Construct<Controller> construct);
+        OpResult run(Settings& settings, Construct<Controller> construct);
 
     private:
         OpResult init();
