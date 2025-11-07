@@ -1,14 +1,9 @@
 #pragma once
 
-#include <QOpenGLWindow>
-#include <QBasicTimer>
-#include <QElapsedTimer>
-#include <QApplication>
-
-#include "gtplatform/gl.h"
-#include "gtengine/utils/delayed.h"
 #include "gtengine/utils/types.h"
 #include "gtengine/App.h"
+
+#include <QApplication>
 
 
 namespace gt
@@ -17,6 +12,8 @@ namespace gt
 
     class Platform
     {
+        friend class OpenGLWindow;
+
         QApplication _app;
         Controller* _controller;
         Construct<Controller> _construct;
@@ -38,22 +35,6 @@ namespace gt
         int draw();
 
         void tick();
-
-        class GLWindow : public QOpenGLWindow
-        {
-            //Q_OBJECT
-
-            Platform& _platform;
-            int _timer;
-
-        public:
-            explicit GLWindow(Platform& platform);
-
-            void initializeGL() override;
-            void resizeGL(int width, int height) override;
-            void paintGL() override;
-            void timerEvent(QTimerEvent*) override;
-        };
 
     public:
         struct Settings

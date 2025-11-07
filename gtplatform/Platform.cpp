@@ -1,9 +1,11 @@
-#include "Platform.h"
+#include "gtplatform/Platform.h"
 
 #include "gtengine/utils/Log.h"
 #include "gtengine/Controller.h"
 
 #include "gtengine/utils/Debug.h"
+
+#include "gtplatform/native/OpenGLWindow.h"
 
 #include <QSurfaceFormat>
 
@@ -34,14 +36,14 @@ namespace gt
         QSurfaceFormat::setDefaultFormat(format);
 
 #ifndef QT_NO_OPENGL
-        GLWindow w(*this);
+        OpenGLWindow window(*this);
         if (settings.foolscreen) {
-            w.showFullScreen();
+            window.showFullScreen();
         }
         else
         {
-            w.resize(settings.width, settings.height);
-            w.show();
+            window.resize(settings.width, settings.height);
+            window.show();
         }
 #else
         QLabel note("OpenGL Support required");
@@ -88,35 +90,5 @@ namespace gt
 
         _controller->tick();
         _controller->tickChildren();
-    }
-
-    Platform::GLWindow::GLWindow(Platform& platform) : _platform(platform) { }
-
-    void Platform::GLWindow::initializeGL()
-    {
-        gl::_functions = QOpenGLContext::currentContext()->functions();
-        gl::_extra = QOpenGLContext::currentContext()->extraFunctions();
-        if (!_platform.init()) {
-            GT_LOG_ERR(AT "_platform.init()");
-        }
-    }
-
-    void Platform::GLWindow::resizeGL(int width, int height) {
-        _platform.resize(width, height);
-    }
-
-    void Platform::GLWindow::paintGL()
-    {
-        // Manually call timer instead of sleep to return control to Qt.
-        _timer = startTimer(_platform.draw());
-
-        // TODO fix freezes
-        Debug::tick();
-    }
-
-    void Platform::GLWindow::timerEvent(QTimerEvent*)
-    {
-        _platform.tick();
-        update();
     }
 }
