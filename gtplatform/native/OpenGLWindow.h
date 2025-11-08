@@ -21,7 +21,7 @@ namespace gt
         void resizeGL(int width, int height) override;
         void paintGL() override;
 
-    public slots:
+    private slots:
         void onTimerTick();
     };
 }

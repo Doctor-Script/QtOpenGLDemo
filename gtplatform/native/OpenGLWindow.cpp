@@ -4,7 +4,6 @@
 #include "gtplatform/gl.h"
 
 #include "gtengine/utils/Log.h"
-#include "gtengine/utils/Debug.h"
 
 #include <QTimer>
 #include <QThread>
@@ -17,11 +16,6 @@ namespace gt
     {
         _timer = new QTimer(this);
         connect(_timer, &QTimer::timeout, this, &OpenGLWindow::onTimerTick);
-
-
-
-
-//        _timer->setInterval(16);
     }
 
     void OpenGLWindow::initializeGL()
@@ -43,14 +37,7 @@ namespace gt
     void OpenGLWindow::paintGL()
     {
         int waitTime = _platform.draw();
-//        if (waitTime > 1) {
-            _timer->setInterval(waitTime);
-//        }
-
-
-
-        // TODO fix freezes
-        Debug::tick();
+        _timer->setInterval(waitTime);
     }
 
     void OpenGLWindow::onTimerTick()

@@ -3,8 +3,6 @@
 #include "gtengine/utils/Log.h"
 #include "gtengine/Controller.h"
 
-#include "gtengine/utils/Debug.h"
-
 #include "gtplatform/native/OpenGLWindow.h"
 
 #include <QSurfaceFormat>
@@ -82,9 +80,7 @@ namespace gt
 
     void Platform::tick()
     {
-        Time& time = _controller->_time;
-        time.frameEnd();
-        time.frameBegin();
+        _controller->_time.onNewFrame();
 
         // TODO Input
 
