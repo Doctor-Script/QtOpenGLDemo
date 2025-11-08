@@ -1,11 +1,9 @@
 #pragma once
 
-#include <QOpenGLWindow>
-#include <QBasicTimer>
-#include <QElapsedTimer>
+#include "gtengine/utils/types.h"
+#include "gtengine/App.h"
 
-#include "gtplatform/gl.h"
-#include "gtengine/utils/delayed.h"
+#include <QApplication>
 
 
 namespace gt
@@ -14,51 +12,36 @@ namespace gt
 
     class Platform
     {
-        Controller& _controller;
+        friend class OpenGLWindow;
+
+        QApplication _app;
+        Controller* _controller;
+        Construct<Controller> _construct;
 
     public:
-        explicit Platform(Controller& controller);
+        struct Settings;
 
-        void init();
+        explicit Platform(int count, void* args);
+        ~Platform();
+
+        OpResult run(Settings& settings, Construct<Controller> construct);
+
+    private:
+        OpResult init();
+        OpResult destroy();
 
         void resize(int width, int height);
 
         int draw();
 
         void tick();
-    };
-
-    template<typename TController> class GtWindow : public QOpenGLWindow
-    {
-        //Q_OBJECT
-
-        delayed<TController> _controller;
-        Platform _platform;
-        int _timer;
 
     public:
-        explicit GtWindow() : _platform(*_controller.get()) { }
-
-        void initializeGL() override
+        struct Settings
         {
-            gl::_functions = QOpenGLContext::currentContext()->functions();
-            gl::_extra = QOpenGLContext::currentContext()->extraFunctions();
-            _controller.construct(_platform);
-            _platform.init();
-        }
-
-        void resizeGL(int width, int height) override {
-            _platform.resize(width, height);
-        }
-
-        void paintGL() override {
-            _timer = startTimer(_platform.draw());
-        }
-
-        void timerEvent(QTimerEvent*) override
-        {
-            _platform.tick();
-            update();
-        }
+            int width;
+            int height;
+            bool foolscreen;
+        };
     };
 }

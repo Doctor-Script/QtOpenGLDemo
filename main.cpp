@@ -1,4 +1,4 @@
-#include "gtengine/gtengine.h"
+#include "gtplatform/gt.h"
 using namespace gt;
 
 
@@ -124,4 +124,8 @@ public:
     }
 };
 
-GT_RUN(DemoController, GT_RES_DEFAULT);
+
+GT_MAIN (
+    GT_IF_QT(GT_SETTINGS = { .width = 640, .height = 480, .foolscreen = false });
+    GT_RUN(DemoController);
+)

@@ -1,8 +1,6 @@
-QT += core gui
-QT += opengl
-#LIBS += -lopengl32
+#QT += core gui
 
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+#greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 CONFIG += c++11
 CONFIG -= debug_and_release 
@@ -12,14 +10,15 @@ CONFIG += debug
 # In order to do so, uncomment the following line.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
+include(gtengine/gtengine.pri)
+include(gtplatform/gtplatform.pri)
+
 SOURCES += \
     main.cpp \
-    $$files(gtengine/*.cpp, true) \
-    $$files(gtplatform/*.cpp, true)
+#    $$files(gtengine/*.cpp, true) \
 
 HEADERS += \
-    $$files(gtengine/*.h, true) \
-    $$files(gtplatform/*.h, true) 
+#    $$files(gtengine/*.h, true) \
 
 RESOURCES += \
     shaders.qrc \

@@ -1,50 +1,90 @@
-#include "Platform.h"
+#include "gtplatform/Platform.h"
 
-#include "gtengine/Controller.h"
 #include "gtengine/utils/Log.h"
+#include "gtengine/Controller.h"
+
+#include "gtplatform/native/OpenGLWindow.h"
 
 #include <QSurfaceFormat>
 
 
 namespace gt
 {
-    Platform::Platform(Controller& controller) : _controller(controller)
+    Platform::Platform(int count, void* args) : _app(count, reinterpret_cast<char**>(args)), _controller(nullptr)
     {
-        GT_LOG_INFO("Launch Platform");
+        GT_LOG_INFO("Launch Platform: Qt");
+    }
+
+    Platform::~Platform() {
+        destroy();
+    }
+
+    OpResult IPlatform::exit()
+    {
+        // TODO implement me
+        return OpResult::OK;
+    }
+
+    OpResult Platform::run(Settings& settings, Construct<Controller> construct)
+    {
+        _construct = construct;
 
         QSurfaceFormat format;
         format.setDepthBufferSize(24);
         QSurfaceFormat::setDefaultFormat(format);
+
+#ifndef QT_NO_OPENGL
+        OpenGLWindow window(*this);
+        if (settings.foolscreen) {
+            window.showFullScreen();
+        }
+        else
+        {
+            window.resize(settings.width, settings.height);
+            window.show();
+        }
+#else
+        QLabel note("OpenGL Support required");
+        note.show();
+#endif
+        return static_cast<OpResult>(!_app.exec());
     }
 
-    void Platform::init()
+    OpResult Platform::init()
     {
-        _controller.start();
-        _controller._time.start();
+        _controller = _construct();
+        CHECK_NULL(_controller);
+
+        _controller->start();
+        _controller->_time.start();
+
+        return OpResult::OK;
+    }
+
+    OpResult Platform::destroy() {
+        return OpResult::OK;
     }
 
     void Platform::resize(int width, int height)
     {
-        _controller.resize(width, height);
-        _controller.layout();
+        _controller->resize(width, height);
+        _controller->layout();
     }
 
     int Platform::draw()
     {
-        _controller.draw();
-        int waitTime = _controller._time.calculateWaitTime();
+        _controller->draw();
+        int waitTime = _controller->_time.calculateWaitTime();
         return waitTime >= 0 ? waitTime : 0;
     }
 
     void Platform::tick()
     {
-        Time& time = _controller._time;
-        time.frameEnd();
-        time.frameBegin();
+        _controller->_time.onNewFrame();
 
         // TODO Input
 
-        _controller.tick();
-        _controller.tickChildren();
+        _controller->tick();
+        _controller->tickChildren();
     }
 }
