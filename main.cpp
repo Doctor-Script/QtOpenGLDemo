@@ -10,58 +10,38 @@ class Compass : public Node2D
     gref<Text> _text;
     gref<Sprite> _place;
 
+    Font::AsyncBuilder* _fontBuilder;
+
 public:
-    explicit Compass(Node::Initalizer initalizer) : Node2D(initalizer), _bg(child<Sprite>("compass-circle.png"))
+    explicit Compass(Node::Initalizer initalizer) : Node2D(initalizer), _bg(child<Sprite>("compass-circle.png")), b(nullptr)
     {
-//        _bg = child<Sprite>("compass-circle.png");
-
-        static GLubyte smiley[] = /* 16x16 smiley face */
-        {
-            0x03, 0xc0, /*       ****       */
-            0x0f, 0xf0, /*     ********     */
-            0x1e, 0x78, /*    ****  ****    */
-            0x39, 0x9c, /*   ***  **  ***   */
-            0x77, 0xee, /*  *** ****** ***  */
-            0x6f, 0xf6, /*  ** ******** **  */
-            0xff, 0xff, /* **************** */
-            0xff, 0xff, /* **************** */
-            0xff, 0xff, /* **************** */
-            0xff, 0xff, /* **************** */
-            0x73, 0xce, /*  ***  ****  ***  */
-            0x73, 0xce, /*  ***  ****  ***  */
-            0x3f, 0xfc, /*   ************   */
-            0x1f, 0xf8, /*    **********    */
-            0x0f, 0xf0, /*     ********     */
-            0x03, 0xc0  /*       ****       */
-        };
-
-//        auto arrow = resources().add<Texture>(Texture::Builder("mono").mono(smiley, 16, 16));
+        auto arrow = resources().icon();
 //        auto arrow = resources().get<Texture>("arrow-mark.png");
-//        auto arrow = resources().get<Texture>("cube.png");
-        auto arrow = resources().get<Texture>("folder/flower.jpg");
-        _target = _bg->child<Sprite>(arrow);
+
+        _target = _bg->child<Sprite>();
         _overlay = child<Sprite>(arrow, Color::f(1.0f, 0.5f, 0.0f, 1.0f));
 
+//        auto font = resources().get<Font>("ua-sdf.fnt");
 
-        auto font = resources().get<Font>("ua-sdf.fnt");
-        float w = 200, h = 200;
-        _place = child<Sprite>("");
-        _place->transform.setWidth(w);
-        _place->transform.setHeight(h);
+        GT_LOG("font");
+
+//        _place = child<Sprite>("");
+//        _place->transform.setWidth(w);
+//        _place->transform.setHeight(h);
+
+        _text = child<Text>()->str("Ab12.ІйаїЇ")->align(Text::H_RIGHT | Text::V_BOTTOM)->color(Color::blue());
+//        _text = child<Text>(font, 72)->str("Ab12.ІйаїЇ")->align(Text::H_RIGHT | Text::V_BOTTOM)->color(Color::blue());
 
 
-        _text = child<Text>(font, 72)->str("Ab12.ІйаїЇ")->align(Text::H_RIGHT | Text::V_BOTTOM)->color(Color::blue());
-        _text->transform.setWidth(w);
-        _text->transform.setHeight(h);
+
+
+        _fontBuilder = new Font::AsyncBuilder(resources(), "ua-sdf.fnt");
+        resources().loadTo<Font>(*_fontBuilder);
+
     }
 
     void start() override
     {
-//        _bg = child<Sprite>("compass-circle.png");
-
-//        auto arrow = resources().get<Texture>("arrow-mark.png");
-//        _target = _bg->child<Sprite>(arrow);
-//        _overlay = child<Sprite>(arrow);
     }
 
     void layout() override
@@ -79,15 +59,51 @@ public:
         _overlay->transform.setWidth(0.3f * size);
         _overlay->transform.setHeight(0.3f * size);
         _overlay->transform.setAngle(90.0f);
+
+        float w = 200, h = 200;
+        _text->transform.setWidth(w);
+        _text->transform.setHeight(h);
     }
+
+    int _tim = 0;
+    bool _done = false;
+    Texture::AsyncBuilder* b;
 
     void tick() override
     {
-        _bg->transform.setAngle(_bg->transform.angle() + 10 * time().delta());
+        if (_fontBuilder != nullptr) {
+            auto font = _fontBuilder->build();
+            if (font != nullptr) {
+                _text->font(font);
+                resources().add(font);
 
-        const float speed = 0;//-70.0f;
-        _text->transform.setAngle(_text->transform.angle() + speed * time().delta());
-        _place->transform.setAngle(_place->transform.angle() + speed * time().delta());
+                delete _fontBuilder;
+                _fontBuilder = nullptr;
+            }
+        }
+
+        _tim += time().deltaMS();
+        if (_tim > 1000 && !_done) {
+            b = new Texture::AsyncBuilder(resources(), "arrow-mark.png");
+            resources().loadTo<Texture>(*b);
+            _done = true;
+        }
+
+        if (b != nullptr) {
+
+            auto tex = b->build();
+            if (tex != nullptr) {
+                resources().add<Texture>(tex);
+                _target->texture(tex);
+                GT_LOG("!!!!!!!!!!!!!!!!!!!!!!!!!!!! DOOONE");
+                delete b;
+                b = nullptr;
+            }
+        }
+
+
+
+        _bg->transform.setAngle(_bg->transform.angle() + 10 * time().delta());
     }
 };
 
