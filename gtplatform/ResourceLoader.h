@@ -16,8 +16,8 @@ namespace gt
     public:
         ResourceLoader(Platform&);
 
-        OpResult load(ResourceManager& manager, Texture::Builder& builder);
+        OpResult load(Texture::BaseBuilder& builder);
 
-        OpResult load(ResourceManager& manager, Font::Builder& builder);
+        OpResult load(Font::BaseBuilder& builder);
     };
 }
