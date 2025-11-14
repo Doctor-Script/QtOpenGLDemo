@@ -27,6 +27,8 @@ namespace gt
         }
 
         builder.fromFile(data, img.width(), img.height(), GL_BGRA_EXT);
+        // !!! If ASYNC: at this point builder can be deleted
+
         return OpResult::OK;
     }
 
