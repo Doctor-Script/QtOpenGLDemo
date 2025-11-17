@@ -62,26 +62,19 @@ public:
 
     void layout() override
     {
+        GT_ASSERT(transform.width() == transform.height());
         float size = transform.width();
 
-        _circle->transform.setWidth(transform.width());
-        _circle->transform.setHeight(transform.height());
-
-        _target->transform.setWidth(0.22f * size);
-        _target->transform.setHeight(0.08f * size);
-        _target->transform.setY(size * 0.4f);
-        _target->transform.setAngle(270.0f);
-
-        _self->transform.setSize(0.29f * size, 0.22f * size);
-        _self->transform.setY(size * 0.19f);
-        _self->transform.setAngle(90.0f);
+        _circle->transform.size(size, size);
+        _target->transform.size(0.22f * size, 0.08f * size).y(size * 0.4f).angle(270.0f);
+        _self->transform.size(0.29f * size, 0.22f * size).y(0.19f * size).angle(90.0f);
 
         int fontSize = 0.13f * size;
         _selfLabel->fontSize(fontSize);
-        _selfLabel->transform.setY(-0.02 * size);
+        _selfLabel->transform.y(-0.02 * size);
 
         _targetLabel->fontSize(fontSize);
-        _targetLabel->transform.setY(-0.15 * size);
+        _targetLabel->transform.y(-0.15 * size);
     }
 
     void tick() override
@@ -92,10 +85,10 @@ public:
         _selfLabel->set(_selfDeg);
         _targetLabel->set(_targeDeg);
 
-        _circle->transform.setAngle(_selfDeg);
+        _circle->transform.angle(_selfDeg);
 
-        _target->transform.setPosition(Vector2(0.0f, transform.width() * 0.4f).rotate(-_targeDeg));
-        _target->transform.setAngle(-_targeDeg + 270.0f);
+        _target->transform.position(Vector2(0.0f, transform.width() * 0.4f).rotate(-_targeDeg));
+        _target->transform.angle(-_targeDeg + 270.0f);
     }
 };
 
@@ -119,11 +112,7 @@ public:
         float size = width < height ? width : height;
         size *= 0.95f;
 
-        _compass->transform.setWidth(size);
-        _compass->transform.setHeight(size);
-
-        _compass->transform.setX(width / 2.f);
-        _compass->transform.setY(height / 2.f);
+        _compass->transform.position(width * 0.5f, height * 0.5f).size(size, size);
     }
 
     void tick() override
