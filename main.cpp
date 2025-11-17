@@ -1,109 +1,101 @@
 #include "gtplatform/gt.h"
 using namespace gt;
 
+#include <cmath>
+#include "gtengine/utils/str.h"
+
+
+struct Config
+{
+    static const Color self;
+    static const Color target;
+};
+
+const Color Config::self = Color::green();
+const Color Config::target = Color::red();
+
+
+
+class CompassLabel : public Text
+{
+    char _buffer[sizeof("-000.00")];
+
+public:
+    explicit CompassLabel(Node::Initalizer initalizer, gref<Font> font, Color color) : Text(initalizer, font) {
+        str(_buffer)->color(color);
+    }
+
+    void set(float value)
+    {
+        value = fmod(value + 360.0f, 360.0f);
+        str_from_float(_buffer, "%06.2f", value);
+    }
+};
 
 class Compass : public Node2D
 {
-    const gref<Sprite> _bg;
+    gref<Sprite> _circle;
     gref<Sprite> _target;
-    gref<Sprite> _overlay;
-    gref<Text> _text;
-    gref<Sprite> _place;
+    gref<Sprite> _self;
 
-    Font::AsyncBuilder* _fontBuilder;
+    gref<CompassLabel> _selfLabel;
+    gref<CompassLabel> _targetLabel;
+
+    float _selfDeg = 0.0f;
+    float _targeDeg = 0.0f;
 
 public:
-    explicit Compass(Node::Initalizer initalizer) : Node2D(initalizer), _bg(child<Sprite>("compass-circle.png")), b(nullptr)
+    explicit Compass(Node::Initalizer initalizer) : Node2D(initalizer)
     {
-        auto arrow = resources().icon();
-//        auto arrow = resources().get<Texture>("arrow-mark.png");
+        _circle = child<Sprite>("compass-circle.png");
 
-        _target = _bg->child<Sprite>();
-        _overlay = child<Sprite>(arrow, Color::f(1.0f, 0.5f, 0.0f, 1.0f));
+        auto mark = resources().get<Texture>("arrow-mark.png");
+        _self = child<Sprite>(mark)->color(Config::self);
+        _target = _circle->child<Sprite>(mark)->color(Config::target);
 
-//        auto font = resources().get<Font>("ua-sdf.fnt");
-
-        GT_LOG("font");
-
-//        _place = child<Sprite>("");
-//        _place->transform.setWidth(w);
-//        _place->transform.setHeight(h);
-
-        _text = child<Text>()->str("Ab12.ІйаїЇ")->align(Text::H_RIGHT | Text::V_BOTTOM)->color(Color::blue());
-//        _text = child<Text>(font, 72)->str("Ab12.ІйаїЇ")->align(Text::H_RIGHT | Text::V_BOTTOM)->color(Color::blue());
-
-
-
-
-        _fontBuilder = new Font::AsyncBuilder(resources(), "ua-sdf.fnt");
-        resources().loadTo<Font>(*_fontBuilder);
-
+        auto font = resources().get<Font>("ua-sdf.fnt");
+        _selfLabel = child<CompassLabel>(font, Config::self);
+        _targetLabel = child<CompassLabel>(font, Config::target);
     }
 
-    void start() override
-    {
-    }
+//    void start() override { }
 
     void layout() override
     {
         float size = transform.width();
 
-        _bg->transform.setWidth(transform.width());
-        _bg->transform.setHeight(transform.height());
+        _circle->transform.setWidth(transform.width());
+        _circle->transform.setHeight(transform.height());
 
-        _target->transform.setWidth(0.2f * size);
-        _target->transform.setHeight(0.1f * size);
-        _target->transform.setX(size * 0.5f);
-        _target->transform.setAngle(180.0f);
+        _target->transform.setWidth(0.22f * size);
+        _target->transform.setHeight(0.08f * size);
+        _target->transform.setY(size * 0.4f);
+        _target->transform.setAngle(270.0f);
 
-        _overlay->transform.setWidth(0.3f * size);
-        _overlay->transform.setHeight(0.3f * size);
-        _overlay->transform.setAngle(90.0f);
+        _self->transform.setSize(0.29f * size, 0.22f * size);
+        _self->transform.setY(size * 0.19f);
+        _self->transform.setAngle(90.0f);
 
-        float w = 200, h = 200;
-        _text->transform.setWidth(w);
-        _text->transform.setHeight(h);
+        int fontSize = 0.13f * size;
+        _selfLabel->fontSize(fontSize);
+        _selfLabel->transform.setY(-0.02 * size);
+
+        _targetLabel->fontSize(fontSize);
+        _targetLabel->transform.setY(-0.15 * size);
     }
-
-    int _tim = 0;
-    bool _done = false;
-    Texture::AsyncBuilder* b;
 
     void tick() override
     {
-        if (_fontBuilder != nullptr) {
-            auto font = _fontBuilder->build();
-            if (font != nullptr) {
-                _text->font(font);
-                resources().add(font);
+        _selfDeg += 10 * time().delta();
+        _targeDeg -= 10 * time().delta();
 
-                delete _fontBuilder;
-                _fontBuilder = nullptr;
-            }
-        }
+        _selfLabel->set(_selfDeg);
+        _targetLabel->set(_targeDeg);
 
-        _tim += time().deltaMS();
-        if (_tim > 1000 && !_done) {
-            b = new Texture::AsyncBuilder(resources(), "arrow-mark.png");
-            resources().loadTo<Texture>(*b);
-            _done = true;
-        }
+        _circle->transform.setAngle(_selfDeg);
 
-        if (b != nullptr) {
-
-            auto tex = b->build();
-            if (tex != nullptr) {
-                resources().add<Texture>(tex);
-                _target->texture(tex);
-                GT_LOG("!!!!!!!!!!!!!!!!!!!!!!!!!!!! DOOONE");
-                delete b;
-                b = nullptr;
-            }
-        }
-
-
-
-        _bg->transform.setAngle(_bg->transform.angle() + 10 * time().delta());
+        _target->transform.setPosition(Vector2(0.0f, transform.width() * 0.4f).rotate(-_targeDeg));
+        _target->transform.setAngle(-_targeDeg + 270.0f);
     }
 };
 
@@ -111,22 +103,21 @@ public:
 class DemoController : public Controller
 {
     gref<Compass> _compass;
+
 public:
     explicit DemoController(Platform& platform) : Controller(platform)
     {
         _compass = canvas()->child<Compass>();
     }
 
-    void start() override
-    {
-//        _compass = canvas()->child<Compass>();
-    }
+//    void start() override { }
 
     void layout() override
     {
         float width = screen().width();
         float height = screen().height();
-        float size = width < height ? width : height - 40.f;
+        float size = width < height ? width : height;
+        size *= 0.95f;
 
         _compass->transform.setWidth(size);
         _compass->transform.setHeight(size);
