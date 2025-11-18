@@ -27,7 +27,7 @@ public:
 
     void set(float value)
     {
-        value = fmod(value + 360.0f, 360.0f);
+        //value = fmod(value + 360.0f, 360.0f);
         str_from_float(_buffer, "%06.2f", value);
     }
 };
@@ -80,7 +80,9 @@ public:
     void tick() override
     {
         _selfDeg += 10 * time().delta();
+        _selfDeg = fmod(_selfDeg + 360.0f, 360.0f);
         _targeDeg -= 10 * time().delta();
+        _targeDeg = fmod(_targeDeg + 360.0f, 360.0f);
 
         _selfLabel->set(_selfDeg);
         _targetLabel->set(_targeDeg);
